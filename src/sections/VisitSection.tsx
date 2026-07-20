@@ -32,9 +32,12 @@ export function VisitSection() {
               </div>
 
               <div>
-                <h3 className="font-black text-[#102a54]">Lutz Lake Crossing</h3>
+                <h3 className="font-black text-[#102a54]">
+                  Lutz Lake Crossing
+                </h3>
+
                 <p className="mt-1 leading-7 text-[#102a54]/62">
-                  Lutz, Florida
+                  Lutz, Florida 33548
                 </p>
               </div>
             </div>
@@ -46,6 +49,7 @@ export function VisitSection() {
 
               <div>
                 <h3 className="font-black text-[#102a54]">Call or text</h3>
+
                 <a
                   href="tel:+17275044722"
                   className="mt-1 block text-lg font-black text-[#0873ae]"
@@ -106,6 +110,7 @@ export function VisitSection() {
             <p className="text-lg font-black">
               Ice cream tastes better together.
             </p>
+
             <p className="mt-2 leading-7 text-white/72">
               Bring the family, meet a friend or treat yourself. We’ll be
               ready with the scoops.

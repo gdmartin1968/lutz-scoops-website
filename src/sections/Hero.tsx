@@ -1,12 +1,9 @@
-﻿import { ArrowRight, IceCreamBowl, MapPin, Sparkles } from "lucide-react";
+﻿import { ArrowRight, MapPin, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 
 export function Hero() {
   return (
-    <section
-      id="top"
-      className="relative overflow-hidden bg-[#fffaf6]"
-    >
+    <section id="top" className="relative overflow-hidden bg-[#fffaf6]">
       <div className="absolute -left-24 top-32 h-72 w-72 rounded-full bg-[#f8ccdc]/45 blur-3xl" />
       <div className="absolute -right-20 bottom-4 h-96 w-96 rounded-full bg-[#ccecf8]/55 blur-3xl" />
 
@@ -58,36 +55,23 @@ export function Hero() {
           className="relative mx-auto w-full max-w-[690px]"
         >
           <div className="relative aspect-square overflow-hidden rounded-[3rem] border border-white/80 bg-gradient-to-br from-[#f9d6e3] via-white to-[#cdebf7] shadow-[0_40px_100px_rgba(16,42,84,0.16)]">
-            <div className="absolute left-[12%] top-[12%] h-20 w-20 rounded-full bg-white/65 blur-sm" />
-            <div className="absolute bottom-[10%] right-[8%] h-32 w-32 rounded-full bg-white/70 blur-md" />
+            <div className="absolute left-[10%] top-[10%] h-24 w-24 rounded-full bg-white/65 blur-sm" />
+            <div className="absolute bottom-[8%] right-[7%] h-36 w-36 rounded-full bg-white/70 blur-md" />
 
-            <div className="absolute inset-0 grid place-items-center px-10 text-center">
-              <div>
-                <div className="relative mx-auto grid h-72 w-72 place-items-center rounded-full bg-white/60 shadow-2xl shadow-[#102a54]/10 backdrop-blur-sm sm:h-96 sm:w-96">
-                  <div className="absolute inset-5 rounded-full border border-white/80" />
-                  <IceCreamBowl
-                    size={170}
-                    strokeWidth={1.15}
-                    className="text-[#df336d] sm:h-[210px] sm:w-[210px]"
-                  />
-                </div>
-
-                <p className="mt-7 text-xl font-black text-[#102a54]">
-                  Your signature hero scoop goes here
-                </p>
-                <p className="mt-2 text-sm font-semibold text-[#102a54]/50">
-                  Real Lutz Scoops photography is next.
-                </p>
-              </div>
-            </div>
+            <img
+              src="/images/flavors/cookie-monster.png"
+              alt="Cookie Monster ice cream served in a Lutz Scoops branded cup"
+              className="relative z-10 h-full w-full object-contain p-5 sm:p-8"
+              fetchPriority="high"
+            />
           </div>
 
           <div className="absolute -bottom-5 left-6 rounded-3xl bg-white px-5 py-4 shadow-xl shadow-[#102a54]/12 sm:left-10">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-[#df336d]">
-              Made for cravings
+              Featured flavor
             </p>
             <p className="mt-1 font-black text-[#102a54]">
-              One scoop is never enough.
+              Cookie Monster
             </p>
           </div>
         </motion.div>
