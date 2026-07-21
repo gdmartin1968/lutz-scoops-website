@@ -1,84 +1,93 @@
 ﻿import {
   Coffee,
-  Heart,
   IceCreamBowl,
-  Smile,
+  MapPin,
+  Users,
 } from "lucide-react";
 
 const experiences = [
   {
-    eyebrow: "Premium scoops",
-    title: "Flavor-first ice cream",
-    description:
-      "Classic favorites, playful creations and rich specialty flavors.",
+    title: "Handcrafted Flavors",
+    description: "Made in small batches for the best taste.",
     icon: IceCreamBowl,
   },
   {
-    eyebrow: "Coffeehouse favorites",
-    title: "Coffee meets dessert",
-    description:
-      "Espresso drinks, iced coffee and the perfect pairing for your scoop.",
+    title: "Coffee & More",
+    description: "Premium coffee, shakes, sundaes and açaí bowls.",
     icon: Coffee,
   },
   {
-    eyebrow: "Made for sharing",
-    title: "A neighborhood gathering place",
-    description:
-      "Family treats, date nights, after-school stops and spontaneous cravings.",
-    icon: Heart,
+    title: "Locally Owned",
+    description: "Locally owned. Family operated. Proud to serve our community.",
+    icon: Users,
   },
   {
-    eyebrow: "Genuine hospitality",
-    title: "Friendly faces. Good vibes.",
-    description:
-      "A warm welcome and something delicious for everyone who walks in.",
-    icon: Smile,
+    title: "Visit Us",
+    description: "Lutz Lake Crossing",
+    linkLabel: "Get Directions",
+    href: "https://www.google.com/maps/search/?api=1&query=Lutz+Scoops+Lutz+Florida",
+    icon: MapPin,
   },
 ];
 
 export function ExperienceStrip() {
   return (
-    <section className="bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-black uppercase tracking-[0.26em] text-[#df336d]">
-            The Lutz Scoops experience
-          </p>
-
-          <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-6xl">
-            More than a scoop.
-          </h2>
-
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#102a54]/60">
-            Great products bring people through the door. A memorable
-            experience brings them back.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {experiences.map(({ eyebrow, title, description, icon: Icon }) => (
+    <section
+      aria-label="The Lutz Scoops experience"
+      className="border-y border-[#102a54]/10 bg-[#fffaf4]"
+    >
+      <div className="mx-auto grid max-w-[1440px] sm:grid-cols-2 lg:grid-cols-4">
+        {experiences.map(
+          ({
+            title,
+            description,
+            linkLabel,
+            href,
+            icon: Icon,
+          }) => (
             <article
               key={title}
-              className="group rounded-[2rem] border border-[#102a54]/8 bg-[#fff9f4] p-7 transition duration-300 hover:-translate-y-2 hover:border-[#df336d]/20 hover:shadow-2xl hover:shadow-[#102a54]/8"
+              className="relative flex min-h-[245px] flex-col items-center justify-center px-7 py-10 text-center sm:px-9 lg:min-h-[270px] lg:py-11"
             >
-              <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-[#df336d] shadow-sm transition group-hover:rotate-3 group-hover:scale-105">
-                <Icon size={27} />
+              <div className="grid h-14 w-14 place-items-center text-[#df336d]">
+                <Icon
+                  size={42}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                />
               </div>
 
-              <p className="mt-6 text-xs font-black uppercase tracking-[0.2em] text-[#0873ae]">
-                {eyebrow}
-              </p>
-
-              <h3 className="mt-2 text-2xl font-black leading-tight tracking-tight text-[#102a54]">
+              <h2 className="mt-4 text-sm font-black uppercase tracking-[0.04em] text-[#102a54]">
                 {title}
-              </h3>
+              </h2>
 
-              <p className="mt-3 leading-7 text-[#102a54]/60">
+              <p className="mt-3 max-w-[230px] text-sm font-medium leading-6 text-[#102a54]/74">
                 {description}
               </p>
+
+              {href && linkLabel && (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 text-sm font-extrabold text-[#0873ae] underline decoration-[#0873ae]/35 underline-offset-4 transition hover:text-[#df336d]"
+                >
+                  {linkLabel}
+                </a>
+              )}
+
+              <div
+                aria-hidden="true"
+                className="absolute bottom-0 left-8 right-8 h-px bg-[#102a54]/10 sm:hidden"
+              />
+
+              <div
+                aria-hidden="true"
+                className="absolute bottom-8 right-0 top-8 hidden w-px bg-[#102a54]/12 lg:block last:hidden"
+              />
             </article>
-          ))}
-        </div>
+          ),
+        )}
       </div>
     </section>
   );
