@@ -1,77 +1,83 @@
-﻿import {
-  ArrowRight,
-  BadgeCheck,
-  IceCreamBowl,
-} from "lucide-react";
+﻿import { ArrowRight } from "lucide-react";
+
+const featuredFlavors = [
+  {
+    name: "Cotton Candy",
+    image: "/images/flavors/cotton-candy.png",
+    alt: "Cotton Candy ice cream served in a Lutz Scoops branded cup",
+  },
+  {
+    name: "Mango Sorbet",
+    image: "/images/flavors/mango-sorbet.png",
+    alt: "Mango Sorbet served in a Lutz Scoops branded cup",
+  },
+  {
+    name: "Smurf",
+    image: "/images/flavors/smurf.png",
+    alt: "Smurf ice cream served in a Lutz Scoops branded cup",
+  },
+  {
+    name: "Ube",
+    image: "/images/flavors/ube.png",
+    alt: "Ube ice cream served in a Lutz Scoops branded cup",
+  },
+];
 
 export function FeaturedFlavors() {
   return (
     <section
       id="flavors"
-      className="overflow-hidden bg-[#102a54] py-24 text-white sm:py-28"
+      className="bg-[#fffaf4] py-16 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-12">
-        <div>
-          <p className="text-sm font-black uppercase tracking-[0.26em] text-[#8fd8f4]">
-            Flavor gallery coming next
+      <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
+        <div className="text-center">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d] sm:text-sm">
+            Customer favorites
           </p>
 
-          <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-[-0.045em] sm:text-6xl">
-            More than 25 flavors. One very difficult decision.
+          <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-[#102a54] sm:text-5xl">
+            Featured Flavors
           </h2>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/62">
-            We are building a complete visual flavor library so every
-            product appears accurately and consistently across the website,
-            digital menus and Lutz OS.
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#102a54]/70 sm:text-lg">
+            Four colorful favorites. One delicious decision.
           </p>
+        </div>
 
-          <div className="mt-8 space-y-4">
-            {[
-              "Accurate product photography",
-              "Consistent Lutz Scoops branding",
-              "Current availability managed separately",
-            ].map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-3 font-bold text-white/80"
-              >
-                <BadgeCheck size={21} className="text-[#f6bdd2]" />
-                {item}
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:mt-12 sm:gap-6 lg:grid-cols-4 lg:gap-7">
+          {featuredFlavors.map((flavor) => (
+            <article
+              key={flavor.name}
+              className="group overflow-hidden rounded-[1.35rem] border border-[#102a54]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#102a54]/10 sm:rounded-[1.6rem]"
+            >
+              <div className="aspect-[4/5] overflow-hidden bg-white">
+                <img
+                  src={flavor.image}
+                  alt={flavor.alt}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
               </div>
-            ))}
-          </div>
 
+              <div className="px-3 py-4 text-center sm:px-5 sm:py-5">
+                <h3 className="text-sm font-black leading-tight text-[#102a54] sm:text-base">
+                  {flavor.name}
+                </h3>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-10 flex justify-center sm:mt-12">
           <a
             href="https://lutzscoops.square.site/"
             target="_blank"
             rel="noreferrer"
-            className="mt-9 inline-flex items-center gap-2 rounded-full bg-[#df336d] px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-[#c92960]"
+            className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#df336d] bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#df336d] transition hover:-translate-y-0.5 hover:bg-[#df336d] hover:text-white"
           >
-            View Online Ordering
-            <ArrowRight size={18} />
+            View All Flavors
+            <ArrowRight size={16} />
           </a>
-        </div>
-
-        <div className="relative">
-          <div className="overflow-hidden rounded-[2.75rem] bg-gradient-to-br from-[#f6c9da] via-white to-[#cfeaf6] p-5 shadow-2xl shadow-black/20 sm:p-8">
-            <img
-              src="/images/flavors/cookie-monster.png"
-              alt="Cookie Monster ice cream in a Lutz Scoops branded cup"
-              className="w-full rounded-[2rem]"
-              loading="lazy"
-            />
-          </div>
-
-          <div className="absolute -bottom-5 -right-2 hidden rounded-3xl bg-white p-5 text-[#102a54] shadow-2xl sm:block">
-            <IceCreamBowl size={28} className="text-[#df336d]" />
-            <p className="mt-3 text-sm font-black uppercase tracking-[0.18em] text-[#0873ae]">
-              Full catalog
-            </p>
-            <p className="mt-1 text-xl font-black">
-              Coming together now
-            </p>
-          </div>
         </div>
       </div>
     </section>
