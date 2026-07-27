@@ -1,4 +1,4 @@
-﻿import { Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export function AboutSection() {
   return (
@@ -17,9 +17,10 @@ export function AboutSection() {
         </h2>
 
         <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-[#102a54]/64">
-          Lutz Scoops is a locally owned ice cream and coffee shop operated
-          by Northstar Hospitality Group LLC. We believe every visit should
-          feel welcoming, memorable and just a little sweeter.
+          Lutz Scoops is a locally owned, family-operated ice cream and coffee
+          shop built around great treats, genuine hospitality, and the people
+          who make our community special. We believe every visit should feel
+          welcoming, memorable and just a little sweeter.
         </p>
       </div>
     </section>
