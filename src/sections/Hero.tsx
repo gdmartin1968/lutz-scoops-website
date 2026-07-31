@@ -1,4 +1,4 @@
-﻿import {
+import {
   ArrowRight,
   ShoppingBag,
 } from "lucide-react";
@@ -128,6 +128,14 @@ export function Hero() {
     ? "border-white bg-white/95 text-[#102a54] hover:bg-white"
     : "border-[#102a54] bg-white/88 text-[#102a54] hover:bg-white";
 
+  const contentPositionClassName = isDark
+    ? "justify-end pb-16 sm:pb-20 lg:pb-20"
+    : "justify-center py-12";
+
+  const contentWidthClassName = isDark
+    ? "max-w-[610px] lg:max-w-[690px]"
+    : "max-w-[680px] lg:max-w-[790px]";
+
   return (
     <section
       id="top"
@@ -173,9 +181,9 @@ export function Hero() {
 
               {isDark ? (
                 <>
-                  <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#071427]/98 via-[#071427]/84 to-[#071427]/12 sm:w-[82%] lg:w-[72%]" />
+                  <div className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-[#071427]/64 via-[#071427]/28 to-transparent sm:w-[56%] lg:w-[48%]" />
 
-                  <div className="absolute inset-y-0 left-0 w-[52%] bg-[#071427]/34 blur-2xl" />
+                  <div className="absolute bottom-0 left-0 h-[44%] w-[58%] bg-gradient-to-t from-[#071427]/34 to-transparent sm:w-[52%] lg:w-[45%]" />
                 </>
               ) : (
                 <>
@@ -203,7 +211,7 @@ export function Hero() {
                       ? 0
                       : 0.6,
                 }}
-                className="relative z-10 flex min-h-[560px] max-w-[680px] flex-col justify-center px-6 py-12 sm:min-h-[610px] sm:px-10 lg:min-h-[625px] lg:max-w-[790px] lg:px-20"
+                className={`relative z-10 flex min-h-[560px] flex-col px-6 sm:min-h-[610px] sm:px-10 lg:min-h-[625px] lg:px-20 ${contentPositionClassName} ${contentWidthClassName}`}
               >
                 <p
                   className={`text-xs font-black uppercase tracking-[0.22em] sm:text-sm ${eyebrowClassName}`}
