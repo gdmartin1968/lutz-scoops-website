@@ -1,4 +1,4 @@
-﻿import {
+import {
   Clock3,
   ExternalLink,
   MapPin,
@@ -8,8 +8,8 @@
 
 const hours = [
   ["Sunday", "12 PM – 8 PM"],
-  ["Monday – Thursday", "10 AM – 9 PM"],
-  ["Friday – Saturday", "10 AM – 10 PM"],
+  ["Monday – Thursday", "12 PM – 9 PM"],
+  ["Friday – Saturday", "12 PM – 10 PM"],
 ];
 
 export function VisitSection() {
