@@ -240,7 +240,7 @@ export function Hero() {
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                   <a
-                    href="https://lutzscoops.square.site/"
+                    href="/order.html"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-md shadow-[#df336d]/25 transition hover:-translate-y-0.5 hover:bg-[#c92960]"

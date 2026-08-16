@@ -102,7 +102,7 @@ export function FeaturedFlavors() {
 
         <div className="mt-10 flex justify-center sm:mt-12">
           <a
-            href="https://lutzscoops.square.site/"
+            href="/order.html"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]"

@@ -1,4 +1,4 @@
-﻿import {
+import {
   Menu,
   ShoppingBag,
   X,
@@ -50,7 +50,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
-            href="https://lutzscoops.square.site/"
+            href="/order.html"
             target="_blank"
             rel="noreferrer"
             className="hidden items-center gap-2 rounded-full bg-[#df336d] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960] sm:inline-flex"
@@ -91,7 +91,7 @@ export function Navbar() {
             ))}
 
             <a
-              href="https://lutzscoops.square.site/"
+              href="/order.html"
               target="_blank"
               rel="noreferrer"
               onClick={closeMenu}
