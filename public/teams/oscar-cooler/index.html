@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Oscar Cooler teams: give Lutz Scoops a head start before your group arrives for an amazing post-game, post-practice or tournament ice cream experience."
+  />
+  <title>Oscar Cooler Teams | Lutz Scoops</title>
+
+  <style>
+    :root {
+      --navy: #102a54;
+      --pink: #df336d;
+      --blue: #0879b9;
+      --cream: #fffaf5;
+      --white: #ffffff;
+      --ink: #102a54;
+      --muted: #5b6f8e;
+      --line: #e7edf4;
+      --soft-blue: #edf8ff;
+      --soft-pink: #fff1f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      min-height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      font-size: 28px;
+      font-weight: 950;
+      letter-spacing: -1px;
+      text-decoration: none;
+      color: var(--pink);
+    }
+
+    .brand span {
+      color: var(--blue);
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-weight: 800;
+    }
+
+    .back {
+      color: var(--blue);
+      font-weight: 850;
+      text-decoration: none;
+    }
+
+    .hero {
+      padding: 72px 20px 54px;
+      text-align: center;
+    }
+
+    .hero-inner {
+      width: min(980px, 100%);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      color: var(--pink);
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(46px, 7vw, 84px);
+      line-height: 0.98;
+      letter-spacing: -4px;
+      font-weight: 950;
+    }
+
+    .hero-copy {
+      max-width: 790px;
+      margin: 28px auto 0;
+      font-size: clamp(19px, 2vw, 24px);
+      line-height: 1.55;
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .hero-copy strong {
+      color: var(--navy);
+    }
+
+    .hero-buttons {
+      margin-top: 34px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 17px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--pink);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--navy);
+      border-color: #d9e1ea;
+    }
+
+    .section {
+      padding: 28px 20px 72px;
+    }
+
+    .wrap {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .arrival-card {
+      overflow: hidden;
+      background: var(--navy);
+      border-radius: 34px;
+      color: white;
+      box-shadow: 0 20px 60px rgba(16, 42, 84, 0.15);
+    }
+
+    .arrival-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    .arrival-copy {
+      padding: 54px;
+    }
+
+    .arrival-copy .eyebrow {
+      color: #ff7ca5;
+    }
+
+    .arrival-copy h2 {
+      margin: 0;
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -2px;
+    }
+
+    .arrival-copy p {
+      margin: 22px 0 0;
+      color: #dbe7f7;
+      font-size: 19px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .arrival-form {
+      background: white;
+      color: var(--navy);
+      padding: 42px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid #cfd9e6;
+      border-radius: 14px;
+      padding: 0 14px;
+      font: inherit;
+      color: var(--navy);
+      background: white;
+    }
+
+    .form-note {
+      margin: 12px 0 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .sports-title {
+      text-align: center;
+      margin: 76px 0 30px;
+    }
+
+    .sports-title h2 {
+      margin: 0;
+      font-size: clamp(34px, 4vw, 52px);
+      letter-spacing: -2px;
+    }
+
+    .sports-title p {
+      max-width: 720px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .sports-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .sport {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 26px;
+      min-height: 220px;
+    }
+
+    .sport-name {
+      font-size: 23px;
+      font-weight: 950;
+      margin-bottom: 12px;
+    }
+
+    .sport-line {
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .sport-note {
+      margin-top: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .location {
+      margin-top: 72px;
+      border-radius: 30px;
+      background: var(--soft-blue);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .location h2 {
+      margin: 0 0 15px;
+      font-size: 36px;
+      letter-spacing: -1px;
+    }
+
+    .location p {
+      margin: 7px 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    .pilot {
+      background: var(--soft-pink);
+      border-radius: 24px;
+      padding: 28px;
+    }
+
+    .pilot strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--pink);
+    }
+
+    footer {
+      background: var(--navy);
+      color: white;
+      padding: 36px 20px;
+      text-align: center;
+      font-weight: 650;
+    }
+
+    footer a {
+      color: white;
+    }
+
+    @media (max-width: 900px) {
+      .arrival-grid,
+      .location {
+        grid-template-columns: 1fr;
+      }
+
+      .sports-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .arrival-copy,
+      .arrival-form {
+        padding: 34px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .topbar-inner {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .brand {
+        font-size: 23px;
+      }
+
+      .hero {
+        padding-top: 46px;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      .sports-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .arrival-copy,
+      .arrival-form,
+      .location {
+        padding: 26px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        LUTZ <span>Scoops</span>
+      </a>
+
+      <a class="back" href="/">
+        Back to Lutz Scoops
+      </a>
+    </div>
+  </header>
+
+
+  <main>
+
+    <section class="hero">
+      <div class="hero-inner">
+
+        <div class="eyebrow">
+          Oscar Cooler Sports Complex × Lutz Scoops
+        </div>
+
+        <h1>
+          You Give Us the Head Start.
+        </h1>
+
+        <p class="hero-copy">
+          <strong>We’ll give your team an amazing Lutz Scoops experience.</strong>
+          Whether you’re leaving a practice, game or tournament at Oscar Cooler,
+          tell us you’re coming and give our crew a chance to get ready for your team.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a class="btn btn-primary" href="#heading-over">
+            We’re Heading to Lutz Scoops
+          </a>
+
+          <a class="btn btn-secondary" href="#team-order">
+            Plan a Team Order
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="section">
+      <div class="wrap">
+
+        <div class="arrival-card" id="heading-over">
+
+          <div class="arrival-grid">
+
+            <div class="arrival-copy">
+
+              <div class="eyebrow">
+                Give Us the Heads-Up
+              </div>
+
+              <h2>
+                Your team is coming. We’ll start getting ready.
+              </h2>
+
+              <p>
+                No pre-order required. Tell us roughly who is coming,
+                how many people to expect and when you think you’ll arrive.
+                That little head start can mean faster service and a smoother
+                group arrival.
+              </p>
+
+            </div>
+
+
+            <div class="arrival-form">
+
+              <form id="arrivalForm">
+
+                <div class="field">
+                  <label for="sport">Sport</label>
+
+                  <select id="sport" name="sport" required>
+                    <option value="">Choose a sport</option>
+                    <option>Baseball</option>
+                    <option>Softball</option>
+                    <option>Basketball</option>
+                    <option>Football</option>
+                    <option>Soccer</option>
+                    <option>Pickleball</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+
+                <div class="field">
+                  <label for="teamName">Team or group name</label>
+
+                  <input
+                    id="teamName"
+                    name="teamName"
+                    maxlength="120"
+                    placeholder="Example: 10U Lightning"
+                    required
+                  />
+                </div>
+
+
+                <div class="field">
+                  <label for="eventType">What are you leaving?</label>
+
+                  <select id="eventType" name="eventType" required>
+                    <option value="">Choose one</option>
+                    <option>Practice</option>
+                    <option>Game</option>
+                    <option>Tournament</option>
+                    <option>Championship</option>
+                    <option>Other team event</option>
+                  </select>
+                </div>
+
+
+                <div class="field">
+                  <label for="groupSize">About how many people?</label>
+
+                  <input
+                    id="groupSize"
+                    name="groupSize"
+                    type="number"
+                    min="1"
+                    max="150"
+                    placeholder="Players + families"
+                    required
+                  />
+                </div>
+
+
+                <div class="field">
+                  <label for="eta">Estimated arrival</label>
+
+                  <select id="eta" name="eta" required>
+                    <option value="">Choose an ETA</option>
+                    <option>About 10 minutes</option>
+                    <option>About 15 minutes</option>
+                    <option>About 20 minutes</option>
+                    <option>About 30 minutes</option>
+                    <option>30–45 minutes</option>
+                    <option>More than 45 minutes</option>
+                  </select>
+                </div>
+
+
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  style="width:100%;margin-top:6px;"
+                  disabled
+                >
+                  Send Our Heads-Up — Coming Next
+                </button>
+
+                <p class="form-note">
+                  We’re connecting this directly to the Lutz Scoops store alert system next.
+                </p>
+
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="sports-title" id="team-order">
+
+          <div class="eyebrow">
+            Built Around the Sport
+          </div>
+
+          <h2>
+            Same idea. Different playbook.
+          </h2>
+
+          <p>
+            The experience can change based on whether your team is coming
+            from baseball, softball, football, soccer, basketball, pickleball
+            or another sport.
+          </p>
+
+        </div>
+
+
+        <div class="sports-grid">
+
+          <article class="sport">
+            <div class="sport-name">⚾ Baseball</div>
+            <div class="sport-line">
+              Bat 1.000 after the game — with fewer Errors.
+            </div>
+            <div class="sport-note">
+              Give us the lineup before everyone reaches the counter.
+            </div>
+          </article>
+
+
+          <article class="sport">
+            <div class="sport-name">🥎 Softball</div>
+            <div class="sport-line">
+              Keep the momentum going after the final out.
+            </div>
+            <div class="sport-note">
+              Bring the team, cool down and keep the good energy going at Lutz Scoops.
+            </div>
+          </article>
+
+
+          <article class="sport">
+            <div class="sport-name">🏈 Football</div>
+            <div class="sport-line">
+              You’re in the red zone. Give us the call.
+            </div>
+            <div class="sport-note">
+              Tell us the group size and ETA so we can prepare for the drive.
+            </div>
+          </article>
+
+
+          <article class="sport">
+            <div class="sport-name">⚽ Soccer</div>
+            <div class="sport-line">
+              The post-game hat trick: faster service, better prep, smoother arrival.
+            </div>
+            <div class="sport-note">
+              Three wins before your team even walks through the door.
+            </div>
+          </article>
+
+
+          <article class="sport">
+            <div class="sport-name">🏀 Basketball</div>
+            <div class="sport-line">
+              Make the post-game visit a triple-double.
+            </div>
+            <div class="sport-note">
+              Team heads-up. Prepared crew. Amazing Lutz Scoops experience.
+            </div>
+          </article>
+
+
+          <article class="sport">
+            <div class="sport-name">🏓 Pickleball</div>
+            <div class="sport-line">
+              The games might be over, but this is one kitchen you’re invited into — no rules against stepping into this zone! Let us serve you and yours!
+            </div>
+            <div class="sport-note">
+              Come join us, cool down and keep the good part of the day
+              going at Lutz Scoops.
+            </div>
+          </article>
+
+        </div>
+
+
+        <div class="location">
+
+          <div>
+
+            <div class="eyebrow">
+              Built for Team Families
+            </div>
+
+            <h2>
+              Oscar Cooler Sports Complex
+            </h2>
+
+            <p>
+              766 W. Lutz Lake Fern Rd<br />
+              Lutz, FL 33548
+            </p>
+
+            <p>
+              Practices, games and tournaments already make for busy days.
+              If your team decides to celebrate, cool down or simply spend
+              a little more time together afterward, we want the Lutz Scoops
+              part to be easy, welcoming and delicious.
+            </p>
+
+          </div>
+
+
+          <div class="pilot">
+
+            <strong>
+              One of the best parts is that the experience doesn’t have to end at the field.
+            </strong>
+
+            <p>
+              A visit to Lutz Scoops gives players, families and friends another
+              chance to celebrate the day, spend time together and make a few more
+              memories. Whether you’re coming from a team sport, a pickleball match
+              or a full day at the complex, give us a little heads-up and we’ll be
+              ready to help keep the experience going.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer>
+
+    Lutz Scoops · 19259 North Dale Mabry Highway · Lutz, FL 33548
+    <br /><br />
+
+    <a href="/">
+      lutzscoops.us
+    </a>
+
+  </footer>
+
+</body>
+</html>
