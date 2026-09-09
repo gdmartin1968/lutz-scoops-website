@@ -1,4 +1,5 @@
-﻿import { Navbar } from "./components/Navbar";
+import { FlavorsPage } from "./pages/FlavorsPage";
+import { Navbar } from "./components/Navbar";
 import { AboutSection } from "./sections/AboutSection";
 import { ExperienceStrip } from "./sections/ExperienceStrip";
 import { FeaturedFlavors } from "./sections/FeaturedFlavors";
@@ -13,12 +14,14 @@ function App() {
       <Navbar />
 
       <main>
+        {window.location.pathname.replace(/\/$/, "") === "/flavors" ? <FlavorsPage /> : <>
         <Hero />
         <ExperienceStrip />
         <FeaturedFlavors />
         <MenuHighlights />
         <VisitSection />
         <AboutSection />
+        </>}
       </main>
 
       <Footer />

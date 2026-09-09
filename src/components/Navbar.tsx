@@ -7,11 +7,11 @@ import { useState } from "react";
 import { BrandMark } from "./BrandMark";
 
 const links = [
-  { label: "Home", href: "#top" },
-  { label: "Flavors", href: "#flavors" },
-  { label: "Menu", href: "#menu" },
-  { label: "About", href: "#about" },
-  { label: "Visit", href: "#visit" },
+  { label: "Home", href: "/#top" },
+  { label: "Flavors", href: "/flavors" },
+  { label: "Menu", href: "/#menu" },
+  { label: "About", href: "/#about" },
+  { label: "Visit", href: "/#visit" },
 ];
 
 export function Navbar() {
@@ -25,7 +25,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-[#102a54]/8 bg-white/95 backdrop-blur-xl">
       <div className="mx-auto flex min-h-[78px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <a
-          href="#top"
+          href="/#top"
           aria-label="Lutz Scoops home"
           onClick={closeMenu}
           className="shrink-0"
@@ -50,7 +50,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
-            href="/order.html"
+            href="https://lutzscoops.square.site/"
             target="_blank"
             rel="noreferrer"
             className="hidden items-center gap-2 rounded-full bg-[#df336d] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960] sm:inline-flex"
@@ -91,7 +91,7 @@ export function Navbar() {
             ))}
 
             <a
-              href="/order.html"
+              href="https://lutzscoops.square.site/"
               target="_blank"
               rel="noreferrer"
               onClick={closeMenu}

@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test:homepage": "node --experimental-strip-types scripts/test-homepage.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:flavors": "node --experimental-strip-types scripts/test-flavors.ts"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",

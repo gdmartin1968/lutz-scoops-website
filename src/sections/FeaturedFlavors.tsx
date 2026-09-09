@@ -1,12 +1,10 @@
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
-  parsePublicFlavorFeed,
+  loadPublicFlavorFeed,
   type PublicFlavor,
 } from "../lib/public-flavors";
 
-const PUBLIC_FLAVORS_URL =
-  "https://os.lutzscoops.us/api/public/flavors";
 
 type LoadState = "loading" | "ready" | "error";
 type FeaturedFlavor = PublicFlavor & { imageUrl: string };
@@ -21,17 +19,7 @@ export function FeaturedFlavors() {
 
     async function loadFlavors() {
       try {
-        const response = await fetch(PUBLIC_FLAVORS_URL, {
-          signal: controller.signal,
-          headers: { Accept: "application/json" },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Flavor API returned ${response.status}`);
-        }
-
-        const data = parsePublicFlavorFeed(await response.json());
-        if (!data) throw new Error("Flavor API returned an invalid response");
+        const data = await loadPublicFlavorFeed(controller.signal);
 
         setAvailableCount(data.count);
         setFlavors(
@@ -99,13 +87,11 @@ export function FeaturedFlavors() {
 
         <div className="mt-10 flex justify-center sm:mt-12">
           <a
-            href="/order.html"
-            target="_blank"
-            rel="noreferrer"
+            href="/flavors"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]"
           >
             <ShoppingBag size={16} />
-            View Today&apos;s Menu
+            View Today&apos;s Flavors
           </a>
         </div>
       </div>

@@ -72,7 +72,7 @@ export function VisitSection() {
             </a>
 
             <a
-              href="/order.html"
+              href="https://lutzscoops.square.site/"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/12 bg-white px-6 py-4 font-black text-[#102a54] transition hover:-translate-y-1"
