@@ -23,12 +23,14 @@ const { pathToFileURL } = require("node:url");
   const report=[];
   try{
     if(live){
-      const response=await browser.request.get(api);
+      const apiContext=await browser.newContext();
+      const response=await apiContext.request.get(api);
       assert.equal(response.status(),200);
       const feed=await response.json();
       assert.equal(feed.count,0,"production visibility must remain unchanged");
       assert.deepEqual(feed.items,[]);
       report.push({api,status:200,count:feed.count});
+      await apiContext.close();
     }
     for(const state of live?["live"]:["populated","empty","error"]){
       for(const width of [375,390,430,768,1024,1440,1920]){
