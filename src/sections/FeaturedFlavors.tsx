@@ -1,31 +1,20 @@
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
-
-type PublicFlavor = {
-  name: string;
-  sortOrder: number;
-  imageUrl: string;
-};
-
-type PublicFlavorResponse = {
-  generatedAt: string;
-  count: number;
-  flavors: PublicFlavor[];
-};
+import {
+  parsePublicFlavorFeed,
+  type PublicFlavor,
+} from "../lib/public-flavors";
 
 const PUBLIC_FLAVORS_URL =
   "https://os.lutzscoops.us/api/public/flavors";
 
-const fallbackFlavors: PublicFlavor[] = [
-  { name: "Mango Sorbet", sortOrder: 1, imageUrl: "/images/flavors/mango-sorbet.png" },
-  { name: "Smurf", sortOrder: 2, imageUrl: "/images/flavors/smurf.png" },
-  { name: "Ube", sortOrder: 3, imageUrl: "/images/flavors/ube.png" },
-  { name: "Strawberry", sortOrder: 4, imageUrl: "/images/flavors/strawberry.png" },
-];
+type LoadState = "loading" | "ready" | "error";
+type FeaturedFlavor = PublicFlavor & { imageUrl: string };
 
 export function FeaturedFlavors() {
-  const [flavors, setFlavors] = useState<PublicFlavor[]>(fallbackFlavors);
-  const [live, setLive] = useState(false);
+  const [flavors, setFlavors] = useState<FeaturedFlavor[]>([]);
+  const [availableCount, setAvailableCount] = useState(0);
+  const [loadState, setLoadState] = useState<LoadState>("loading");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -41,18 +30,20 @@ export function FeaturedFlavors() {
           throw new Error(`Flavor API returned ${response.status}`);
         }
 
-        const data = (await response.json()) as PublicFlavorResponse;
-        const currentFlavors = data.flavors
-          .filter((flavor) => Boolean(flavor.name) && Boolean(flavor.imageUrl))
-          .sort((a, b) => a.sortOrder - b.sortOrder);
+        const data = parsePublicFlavorFeed(await response.json());
+        if (!data) throw new Error("Flavor API returned an invalid response");
 
-        if (currentFlavors.length > 0) {
-          setFlavors(currentFlavors);
-          setLive(true);
-        }
+        setAvailableCount(data.count);
+        setFlavors(
+          data.featured.filter(
+            (flavor): flavor is FeaturedFlavor =>
+              Boolean(flavor.imageUrl),
+          ),
+        );
+        setLoadState("ready");
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        console.error("Unable to load live Lutz Scoops flavors:", error);
+        setLoadState("error");
       }
     }
 
@@ -65,22 +56,27 @@ export function FeaturedFlavors() {
       <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div className="text-center">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d] sm:text-sm">
-            {live ? "Live from today’s scoop case" : "A few Lutz Scoops favorites"}
+            Live from today&apos;s scoop case
           </p>
           <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-[#102a54] sm:text-5xl">
-            Today&apos;s Flavors
+            Featured Flavors
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#102a54]/70 sm:text-lg">
-            {live
-              ? `${flavors.length} flavors currently available at Lutz Scoops.`
-              : "Our live flavor list is refreshing. Here are a few favorites in the meantime."}
+            {loadState === "loading" && "Checking today’s scoop case…"}
+            {loadState === "ready" && flavors.length > 0 &&
+              `${availableCount} ${availableCount === 1 ? "flavor is" : "flavors are"} available today. Here are today’s featured scoops.`}
+            {loadState === "ready" && flavors.length === 0 &&
+              "Today’s featured scoops will appear here when they are selected in our scoop case."}
+            {loadState === "error" &&
+              "Our live flavor list is taking a moment to refresh. Please call or visit us to see today’s scoop case."}
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:mt-12 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:grid-cols-5">
-          {flavors.map((flavor) => (
+        {flavors.length > 0 && (
+          <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+            {flavors.map((flavor) => (
             <article
-              key={`${flavor.sortOrder}-${flavor.name}`}
+              key={flavor.id}
               className="group overflow-hidden rounded-[1.35rem] border border-[#102a54]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#102a54]/10 sm:rounded-[1.6rem]"
             >
               <div className="aspect-[4/5] overflow-hidden bg-white">
@@ -97,8 +93,9 @@ export function FeaturedFlavors() {
                 </h3>
               </div>
             </article>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-10 flex justify-center sm:mt-12">
           <a
@@ -108,7 +105,7 @@ export function FeaturedFlavors() {
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]"
           >
             <ShoppingBag size={16} />
-            Order Online
+            View Today&apos;s Menu
           </a>
         </div>
       </div>

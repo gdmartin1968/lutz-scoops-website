@@ -6,36 +6,43 @@
   Leaf,
   Sparkles,
 } from "lucide-react";
+import { publicMenuHighlights } from "../lib/public-menu";
 
 const highlights = [
   {
     name: "Premium Ice Cream",
     description: "Classic favorites and unforgettable specialty flavors.",
+    priceLabel: publicMenuHighlights.iceCream.priceLabel,
     icon: IceCreamBowl,
   },
   {
     name: "Milkshakes",
     description: "Thick, creamy and blended exactly how you like them.",
+    priceLabel: publicMenuHighlights.milkshakes.priceLabel,
     icon: Blend,
   },
   {
     name: "Sundaes",
     description: "Loaded with toppings, sauces and plenty of personality.",
+    priceLabel: publicMenuHighlights.sundaes.priceLabel,
     icon: Sparkles,
   },
   {
     name: "Coffee & Espresso",
     description: "Coffeehouse favorites made for sipping or pairing.",
+    priceLabel: publicMenuHighlights.coffee.priceLabel,
     icon: Coffee,
   },
   {
     name: "Açaí Bowls",
     description: "Refreshing bowls topped with fruit and crunch.",
+    priceLabel: publicMenuHighlights.acaiBowls.priceLabel,
     icon: Leaf,
   },
   {
     name: "Floats & More",
     description: "Root beer floats, specialty drinks and sweet surprises.",
+    priceLabel: publicMenuHighlights.floatsAndMore.priceLabel,
     icon: CupSoda,
   },
 ];
@@ -55,7 +62,7 @@ export function MenuHighlights() {
         </div>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {highlights.map(({ name, description, icon: Icon }) => (
+          {highlights.map(({ name, description, priceLabel, icon: Icon }) => (
             <article
               key={name}
               className="group rounded-[2rem] border border-[#102a54]/8 bg-[#fffaf6] p-7 transition duration-300 hover:-translate-y-2 hover:border-[#df336d]/20 hover:shadow-2xl hover:shadow-[#102a54]/8"
@@ -70,6 +77,10 @@ export function MenuHighlights() {
 
               <p className="mt-3 leading-7 text-[#102a54]/62">
                 {description}
+              </p>
+
+              <p className="mt-5 text-sm font-black uppercase tracking-[0.08em] text-[#0873ae]">
+                {priceLabel}
               </p>
             </article>
           ))}
