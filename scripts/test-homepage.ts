@@ -27,6 +27,7 @@ assert.equal(parsePublicFlavorFeed({ available: null, featured: [] }), null, "in
 
 const featured = readFileSync(new URL("../src/sections/FeaturedFlavors.tsx", import.meta.url), "utf8");
 const menu = readFileSync(new URL("../src/lib/public-menu.ts", import.meta.url), "utf8");
+const menuHighlights = readFileSync(new URL("../src/sections/MenuHighlights.tsx", import.meta.url), "utf8");
 
 assert.match(featured, /data\.featured\.filter/, "homepage must consume the featured collection");
 assert.doesNotMatch(featured, /fallbackFlavors/, "homepage must not fabricate fallback flavors");
@@ -36,8 +37,34 @@ assert.match(featured, /loadState === "error"/, "API failures must have a gracef
 assert.match(featured, /setAvailableCount\(data\.count\)/, "available content must use the authoritative feed count");
 assert.doesNotMatch(featured, /\.sort\(/, "homepage must not reorder featured flavors");
 
-for (const price of ["$4.99", "$8.50", "$1.99", "$12.50", "$5.99"]) {
-  assert.ok(menu.includes(price), `expected confirmed public price ${price}`);
-}
+assert.match(
+  menu,
+  /https:\/\/os\.lutzscoops\.us\/api\/public\/menu/,
+  "homepage pricing must use the public menu API",
+);
+
+assert.match(
+  menuHighlights,
+  /fetchPublicMenu/,
+  "Menu Highlights must fetch canonical public menu data",
+);
+
+assert.match(
+  menuHighlights,
+  /resolveHighlightPrice/,
+  "Menu Highlights must derive prices from public menu data",
+);
+
+assert.match(
+  menuHighlights,
+  /priceLabel &&/,
+  "missing pricing must degrade gracefully without fabricated fallback pricing",
+);
+
+assert.doesNotMatch(
+  menuHighlights,
+  /publicMenuHighlights/,
+  "legacy hardcoded homepage pricing map must not remain",
+);
 
 console.log("Homepage integration assertions passed.");
