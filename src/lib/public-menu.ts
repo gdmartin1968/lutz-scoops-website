@@ -72,14 +72,17 @@ const highlightAliases: Record<MenuHighlightKey, string[]> = {
   ],
 };
 
-// Exact normalized categories are the authoritative business groupings.
-const highlightCategories: Record<MenuHighlightKey, string[]> = {
-  iceCream: ["scoops"],
-  milkshakes: ["milkshakes"],
-  sundaes: ["sundaes"],
-  coffee: ["coffee and cocoa"],
-  acaiBowls: ["bowls", "acai bowls"],
-  floatsAndMore: ["floats and ice cream sodas"],
+// Presentation cards can represent an entire category or one canonical item.
+const highlightSources: Record<MenuHighlightKey,
+  | { kind: "category"; categories: string[] }
+  | { kind: "item"; name: string }
+> = {
+  iceCream: { kind: "category", categories: ["scoops"] },
+  milkshakes: { kind: "category", categories: ["milkshakes"] },
+  sundaes: { kind: "category", categories: ["sundaes"] },
+  coffee: { kind: "category", categories: ["coffee and cocoa"] },
+  acaiBowls: { kind: "category", categories: ["bowls", "acai bowls"] },
+  floatsAndMore: { kind: "item", name: "Floats & Ice Cream Sodas" },
 };
 
 function isNullableString(value: unknown): value is string | null {
@@ -209,9 +212,15 @@ export function findHighlightItems(
   items: PublicMenuItem[],
   key: MenuHighlightKey,
 ): PublicMenuItem[] {
+  const source = highlightSources[key];
+  if (source.kind === "item") {
+    // No category or presentation-name fallback: a missing canonical item
+    // means this card has no published price.
+    return items.filter(item => normalize(item.name) === normalize(source.name));
+  }
   const keys = Object.keys(highlightAliases) as MenuHighlightKey[];
   const categoryItems = items.filter(item =>
-    highlightCategories[key].includes(normalize(item.category ?? "")) &&
+    source.categories.includes(normalize(item.category ?? "")) &&
     // Keep a separately named product (e.g. Floats) out of another card's
     // category aggregation if an older menu groups it with Milkshakes.
     !keys.some(other => other !== key && matchesItemName(item, other)),

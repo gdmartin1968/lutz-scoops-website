@@ -26,7 +26,13 @@ export const fixtures: PublicMenuItem[] = [
     variant("Coffee & Cocoa Latte from", "3.99", "Latte from"),
   ]),
   item("Açaí Bowl", "Bowls", [variant("Regular", "12.50")]),
-  item("Floats & Ice Cream Sodas", "Floats & Ice Cream Sodas", [variant("Ice Cream Float 16 oz", "7.99")]),
+  item("Floats & Ice Cream Sodas", "Shakes & Floats", [
+    variant("Ice Cream Float 16 oz", "7.99"), variant("Ice Cream Soda 16 oz", "7.99"),
+  ]),
+  // Synthetic adversarial records, not claimed to be the unavailable historical
+  // production collision. Cover category and presentation-alias contamination.
+  item("QA Specialty Drink", "Floats & Ice Cream Sodas", [variant("Regular", "5.99")]),
+  item("Floats & More", "Shakes & Floats", [variant("Regular", "5.99")]),
 ];
 
 export const expectedPrices: Record<MenuHighlightKey, string> = {

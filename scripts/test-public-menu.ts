@@ -35,6 +35,18 @@ assert.equal(resolveHighlightPrice([
   item("Floats & Ice Cream Sodas","Shakes & Floats",[variant("Regular","7.99")]),
 ],"floatsAndMore"),"From $7.99","exact item fallback for older broad categories");
 
+const canonicalFloat = item("Floats & Ice Cream Sodas","Shakes & Floats",[
+  variant("Ice Cream Float 16 oz","7.99"), variant("Ice Cream Soda 16 oz","7.99"),
+]);
+const competingFloatRecords = [
+  item("QA Specialty Drink","Floats & Ice Cream Sodas",[variant("Regular","5.99")]),
+  item("Floats & More","Shakes & Floats",[variant("Regular","5.99")]),
+];
+assert.equal(resolveHighlightPrice([canonicalFloat,...competingFloatRecords],"floatsAndMore"),"From $7.99");
+assert.equal(resolveHighlightPrice(competingFloatRecords,"floatsAndMore"),null,"canonical item absent means no price");
+assert.equal(resolveHighlightPrice([item(" floats & ICE cream sodas ",null,[variant("Regular","9.25")])],"floatsAndMore"),"From $9.25","normalized canonical match, price derived from data");
+assert.equal(resolveHighlightPrice([item("Floats & Ice Cream Sodas",null,[variant("Upgrade","1.00")]),...competingFloatRecords],"floatsAndMore"),null,"no category fallback when canonical item has no base price");
+
 for (const label of ["Add Malt Powder","Vegan Milkshake Upgrade","Add Flavor Shot","Malt Add-on","Malt Addon","Extra Shot","Extra Toppings"]) {
   for (const v of [variant(label,"0.50",null),variant(null,"0.50",label)]) {
     assert.equal(getStartingPrice(item("Milkshakes","Milkshakes",[v])),null,label+" in either label is not a base");

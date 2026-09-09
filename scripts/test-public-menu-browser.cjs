@@ -20,6 +20,7 @@ const { pathToFileURL } = require("node:url");
   const browser=await chromium.launch({headless:true,channel:"chrome"});
   const api="https://os.lutzscoops.us/api/public/menu";
   const names=["Premium Ice Cream","Milkshakes","Sundaes","Coffee & Espresso","Açaí Bowls","Floats & More"];
+  const {resolveHighlightPrice,isPublicMenuResponse}=await import(pathToFileURL(path.join(root,"src/lib/public-menu.ts")).href);
   const report=[];
   try{
     if(live){
@@ -27,8 +28,7 @@ const { pathToFileURL } = require("node:url");
       const response=await apiContext.request.get(api);
       assert.equal(response.status(),200);
       const feed=await response.json();
-      assert.equal(feed.count,0,"production visibility must remain unchanged");
-      assert.deepEqual(feed.items,[]);
+      assert.ok(isPublicMenuResponse(feed));
       report.push({api,status:200,count:feed.count});
       await apiContext.close();
     }
@@ -45,11 +45,21 @@ const { pathToFileURL } = require("node:url");
         const responsePromise=page.waitForResponse(api);
         const response=await page.goto(base+"/");
         assert.equal(response.status(),200);
-        await responsePromise;
+        const menuResponse=await responsePromise;
         const section=page.locator("#menu");
         await section.scrollIntoViewIfNeeded();
         assert.deepEqual(await section.locator("article h3").allTextContents(),names);
-        if(state==="populated"){
+        if(state==="live"){
+          const feed=await menuResponse.json();
+          assert.ok(isPublicMenuResponse(feed));
+          const prices=Object.keys(expectedPrices).map(key=>resolveHighlightPrice(feed.items,key));
+          if(process.env.REQUIRE_ALL_MENU_PRICES==="1") assert.deepEqual(prices,Object.values(expectedPrices),"all six prices require published canonical data");
+          await page.waitForFunction(expected => {
+            const actual=Array.from(document.querySelectorAll("#menu article")).map(n=>Array.from(n.querySelectorAll("p")).find(p=>p.textContent.startsWith("From $"))?.textContent ?? null);
+            return JSON.stringify(actual)===JSON.stringify(expected);
+          },prices);
+          report.push({width,prices});
+        }else if(state==="populated"){
           await section.getByText("From $7.99",{exact:true}).waitFor();
           assert.deepEqual(await section.locator("article").evaluateAll(nodes=>nodes.map(n=>Array.from(n.querySelectorAll("p")).at(-1).textContent)),Object.values(expectedPrices));
         }else{
