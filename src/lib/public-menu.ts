@@ -9,6 +9,7 @@ export type PublicMenuVariant = {
 
 export type PublicMenuItem = {
   name: string;
+  category: string | null;
   description: string | null;
   displayOrder: number;
   variants: PublicMenuVariant[];
@@ -39,6 +40,7 @@ const normalize = (value: string) =>
 
 const highlightAliases: Record<MenuHighlightKey, string[]> = {
   iceCream: [
+    "scoops",
     "premium ice cream",
     "ice cream",
     "hand dipped ice cream",
@@ -53,6 +55,7 @@ const highlightAliases: Record<MenuHighlightKey, string[]> = {
     "sundae",
   ],
   coffee: [
+    "coffee and cocoa",
     "coffee and espresso",
     "coffee",
     "espresso",
@@ -62,10 +65,21 @@ const highlightAliases: Record<MenuHighlightKey, string[]> = {
     "acai bowl",
   ],
   floatsAndMore: [
+    "floats and ice cream sodas",
     "floats and more",
     "floats",
     "float",
   ],
+};
+
+// Exact normalized categories are the authoritative business groupings.
+const highlightCategories: Record<MenuHighlightKey, string[]> = {
+  iceCream: ["scoops"],
+  milkshakes: ["milkshakes"],
+  sundaes: ["sundaes"],
+  coffee: ["coffee and cocoa"],
+  acaiBowls: ["bowls", "acai bowls"],
+  floatsAndMore: ["floats and ice cream sodas"],
 };
 
 function isNullableString(value: unknown): value is string | null {
@@ -92,6 +106,7 @@ function isPublicMenuItem(value: unknown): value is PublicMenuItem {
 
   return (
     typeof candidate.name === "string" &&
+    isNullableString(candidate.category) &&
     isNullableString(candidate.description) &&
     typeof candidate.displayOrder === "number" &&
     Array.isArray(candidate.variants) &&
@@ -153,8 +168,21 @@ function parsePrice(price: string): number | null {
   return Number.isFinite(value) && value >= 0 ? value : null;
 }
 
+// The seeded public variants use both name and sizeLabel for modifier wording.
+// Match words, not price thresholds or substrings such as "shot": an espresso
+// shot is a base product. Extra Large/Small are legitimate sizes.
+function isModifierVariant(variant: PublicMenuVariant): boolean {
+  return [variant.name, variant.sizeLabel].some(label => {
+    if (!label) return false;
+    const words = normalize(label);
+    return /\b(?:add|addon|addons|upgrade|upgrades)\b/.test(words) ||
+      /\bextra (?:shots?|scoops?|toppings?|syrup|malt|flavou?r|whipped cream)\b/.test(words);
+  });
+}
+
 export function getStartingPrice(item: PublicMenuItem): number | null {
   const prices = item.variants
+    .filter((variant) => !isModifierVariant(variant))
     .map((variant) => parsePrice(variant.price))
     .filter((price): price is number => price !== null);
 
@@ -173,42 +201,35 @@ export function formatStartingPrice(price: number | null): string | null {
   return `From $${price.toFixed(2)}`;
 }
 
-export function findHighlightItem(
+function matchesItemName(item: PublicMenuItem, key: MenuHighlightKey): boolean {
+  return highlightAliases[key].includes(normalize(item.name));
+}
+
+export function findHighlightItems(
   items: PublicMenuItem[],
   key: MenuHighlightKey,
-): PublicMenuItem | null {
-  const aliases = highlightAliases[key].map(normalize);
-
-  const exactMatch = items.find((item) =>
-    aliases.includes(normalize(item.name)),
+): PublicMenuItem[] {
+  const keys = Object.keys(highlightAliases) as MenuHighlightKey[];
+  const categoryItems = items.filter(item =>
+    highlightCategories[key].includes(normalize(item.category ?? "")) &&
+    // Keep a separately named product (e.g. Floats) out of another card's
+    // category aggregation if an older menu groups it with Milkshakes.
+    !keys.some(other => other !== key && matchesItemName(item, other)),
   );
 
-  if (exactMatch) {
-    return exactMatch;
-  }
-
-  return (
-    items.find((item) => {
-      const itemName = normalize(item.name);
-
-      return aliases.some(
-        (alias) =>
-          itemName.includes(alias) ||
-          alias.includes(itemName),
-      );
-    }) ?? null
-  );
+  // Prefer all published items in the canonical category. For uncategorized
+  // or older broadly grouped menus, fall back to exact item aliases only.
+  return categoryItems.length > 0
+    ? categoryItems
+    : items.filter(item => matchesItemName(item, key));
 }
 
 export function resolveHighlightPrice(
   items: PublicMenuItem[],
   key: MenuHighlightKey,
 ): string | null {
-  const item = findHighlightItem(items, key);
-
-  if (!item) {
-    return null;
-  }
-
-  return formatStartingPrice(getStartingPrice(item));
+  const prices = findHighlightItems(items, key)
+    .map(getStartingPrice)
+    .filter((price): price is number => price !== null);
+  return formatStartingPrice(prices.length > 0 ? Math.min(...prices) : null);
 }

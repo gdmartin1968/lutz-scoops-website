@@ -1,175 +1,80 @@
 import assert from "node:assert/strict";
 import {
-  PUBLIC_MENU_URL,
-  findHighlightItem,
-  formatStartingPrice,
-  getStartingPrice,
-  isPublicMenuResponse,
-  resolveHighlightPrice,
-  type PublicMenuItem,
-} from "../src/lib/public-menu";
+  PUBLIC_MENU_URL, fetchPublicMenu, findHighlightItems, formatStartingPrice,
+  getStartingPrice, isPublicMenuResponse, resolveHighlightPrice, type MenuHighlightKey,
+} from "../src/lib/public-menu.ts";
+import { fixtures, expectedPrices, item, variant } from "./public-menu-fixtures.ts";
 
-assert.equal(
-  PUBLIC_MENU_URL,
-  "https://os.lutzscoops.us/api/public/menu",
-);
+assert.equal(PUBLIC_MENU_URL, "https://os.lutzscoops.us/api/public/menu");
+for (const key of Object.keys(expectedPrices) as MenuHighlightKey[]) {
+  assert.equal(resolveHighlightPrice(fixtures,key),expectedPrices[key],key);
+  assert.equal(resolveHighlightPrice([],key),null,"empty feed has no price");
+  const reversed = [...fixtures].reverse().map(item=>({...item,variants:[...item.variants].reverse()}));
+  assert.equal(resolveHighlightPrice(reversed,key),expectedPrices[key],"API order cannot change a starting price");
+}
+assert.equal(findHighlightItems(fixtures,"sundaes").length,4,"aggregate individual Sundaes category items");
+assert.equal(resolveHighlightPrice([
+  item("Regular Bowl","BÓWLS",[variant("Regular","14.50")]),
+  item("Seasonal Bowl"," bowls ",[variant("Regular","12.50")]),
+],"acaiBowls"),"From $12.50","multiple category items and normalized category matching");
 
-const fixtures: PublicMenuItem[] = [
-  {
-    name: "Milkshakes",
-    description: "Hand-spun shakes",
-    displayOrder: 20,
-    variants: [
-      {
-        name: "Regular",
-        sizeLabel: "16 oz",
-        price: "8.50",
-        displayOrder: 10,
-      },
-      {
-        name: "Large",
-        sizeLabel: "20 oz",
-        price: "9.50",
-        displayOrder: 20,
-      },
-    ],
-  },
-  {
-    name: "Coffee & Espresso",
-    description: null,
-    displayOrder: 30,
-    variants: [
-      {
-        name: "Small Coffee",
-        sizeLabel: "12 oz",
-        price: "$1.99",
-        displayOrder: 10,
-      },
-      {
-        name: "Espresso",
-        sizeLabel: null,
-        price: "2.50",
-        displayOrder: 20,
-      },
-    ],
-  },
-  {
-    name: "Sundaes",
-    description: null,
-    displayOrder: 40,
-    variants: [],
-  },
-  {
-    name: "Açaí Bowls",
-    description: null,
-    displayOrder: 50,
-    variants: [
-      {
-        name: null,
-        sizeLabel: null,
-        price: "12.50",
-        displayOrder: 10,
-      },
-    ],
-  },
-];
+for (const name of ["Açaí Bowls","Acai Bowls","Ac\u0327ai\u0301 Bowls"]) {
+  assert.equal(resolveHighlightPrice([item(name,null,[variant(null,"12.50")])],"acaiBowls"),"From $12.50","Unicode-safe exact fallback");
+}
+assert.equal(resolveHighlightPrice([item("Scoops",null,[variant("Kiddie","4.99")])],"iceCream"),"From $4.99");
+assert.equal(resolveHighlightPrice([item("Ice",null,[variant(null,"0.25")])],"iceCream"),null,"no partial-name matching");
+assert.equal(resolveHighlightPrice([
+  item("Hot Fudge","Sundaes",[variant("Regular","8.50")]),
+  item("Sundaes",null,[variant("Regular","1.00")]),
+],"sundaes"),"From $8.50","canonical category wins over legacy alias fallback");
+assert.equal(resolveHighlightPrice([
+  item("Floats & Ice Cream Sodas","Milkshakes",[variant("Regular","7.99")]),
+  fixtures[1],
+],"milkshakes"),"From $8.50","separately named floats must not lower shake price");
+assert.equal(resolveHighlightPrice([
+  item("Floats & Ice Cream Sodas","Shakes & Floats",[variant("Regular","7.99")]),
+],"floatsAndMore"),"From $7.99","exact item fallback for older broad categories");
 
-assert.equal(
-  findHighlightItem(fixtures, "milkshakes")?.name,
-  "Milkshakes",
-);
+for (const label of ["Add Malt Powder","Vegan Milkshake Upgrade","Add Flavor Shot","Malt Add-on","Malt Addon","Extra Shot","Extra Toppings"]) {
+  for (const v of [variant(label,"0.50",null),variant(null,"0.50",label)]) {
+    assert.equal(getStartingPrice(item("Milkshakes","Milkshakes",[v])),null,label+" in either label is not a base");
+  }
+}
+for (const label of ["Extra Large","Extra Small","Double Espresso Shot","Affogato","Latte from","Milkshakes 16 oz","Addison Special"]) {
+  assert.equal(getStartingPrice(item("Coffee & Cocoa","Coffee & Cocoa",[variant(label,"1.99") ])),1.99,label+" is a legitimate product/size");
+}
+assert.equal(resolveHighlightPrice([item("Milkshakes","Milkshakes",[variant("Upgrade","1.00")])],"milkshakes"),null);
+assert.equal(getStartingPrice(item("Scoops","Scoops",[])),null);
+for (const price of ["n/a","NaN","Infinity","-1.00","","4.999","not a price"]) {
+  assert.equal(getStartingPrice(item("Scoops","Scoops",[variant("Regular",price)])),null,price);
+}
+assert.equal(getStartingPrice(item("Scoops","Scoops",[variant("Regular","bad"),variant("Large","$4.99")])),4.99);
+assert.equal(getStartingPrice(item("Coffee","Coffee & Cocoa",[variant("Small","0.25")])),.25,"no arbitrary price floor");
+assert.equal(formatStartingPrice(null),null);
+assert.equal(formatStartingPrice(8.5),"From $8.50");
 
-assert.equal(
-  findHighlightItem(fixtures, "coffee")?.name,
-  "Coffee & Espresso",
-);
+const envelope=(items: unknown[])=>({generatedAt:"2026-09-09T20:00:00Z",count:items.length,items});
+assert.ok(isPublicMenuResponse(envelope(fixtures)));
+assert.ok(isPublicMenuResponse(envelope([])));
+assert.ok(isPublicMenuResponse(envelope([item("Scoops",null,[])])));
+assert.equal(isPublicMenuResponse({...envelope([]),count:1}),false);
+assert.equal(isPublicMenuResponse({...envelope([]),items:null}),false);
+assert.equal(isPublicMenuResponse(envelope([{...fixtures[0],category:42}])),false);
+assert.equal(isPublicMenuResponse(envelope([{...fixtures[0],variants:[{...variant("Regular","4.99"),price:4.99}]}])),false);
+assert.equal(isPublicMenuResponse(envelope([{...fixtures[0],variants:null}])),false);
 
-assert.equal(
-  findHighlightItem(fixtures, "acaiBowls")?.name,
-  "Açaí Bowls",
-);
+const originalFetch=globalThis.fetch;
+try {
+  globalThis.fetch=async()=>new Response(JSON.stringify(envelope(fixtures)));
+  assert.equal((await fetchPublicMenu()).items.length,fixtures.length);
+  globalThis.fetch=async()=>new Response(JSON.stringify(envelope([])));
+  assert.deepEqual((await fetchPublicMenu()).items,[]);
+  globalThis.fetch=async()=>new Response("",{status:503});
+  await assert.rejects(fetchPublicMenu);
+  globalThis.fetch=async()=>{throw new TypeError("Network failure");};
+  await assert.rejects(fetchPublicMenu);
+  globalThis.fetch=async()=>new Response('{"items":null}');
+  await assert.rejects(fetchPublicMenu);
+} finally {globalThis.fetch=originalFetch;}
 
-assert.equal(
-  getStartingPrice(fixtures[0]),
-  8.5,
-);
-
-assert.equal(
-  getStartingPrice(fixtures[1]),
-  1.99,
-);
-
-assert.equal(
-  getStartingPrice(fixtures[2]),
-  null,
-);
-
-assert.equal(
-  formatStartingPrice(8.5),
-  "From $8.50",
-);
-
-assert.equal(
-  formatStartingPrice(null),
-  null,
-);
-
-assert.equal(
-  resolveHighlightPrice(fixtures, "milkshakes"),
-  "From $8.50",
-);
-
-assert.equal(
-  resolveHighlightPrice(fixtures, "coffee"),
-  "From $1.99",
-);
-
-assert.equal(
-  resolveHighlightPrice(fixtures, "sundaes"),
-  null,
-);
-
-assert.equal(
-  resolveHighlightPrice(fixtures, "acaiBowls"),
-  "From $12.50",
-);
-
-assert.equal(
-  isPublicMenuResponse({
-    generatedAt: "2026-09-09T19:22:33.754Z",
-    count: 0,
-    items: [],
-  }),
-  true,
-);
-
-assert.equal(
-  isPublicMenuResponse({
-    generatedAt: "2026-09-09T19:22:33.754Z",
-    count: 1,
-    items: [],
-  }),
-  false,
-  "count must agree with public items",
-);
-
-assert.equal(
-  isPublicMenuResponse({
-    generatedAt: "2026-09-09T19:22:33.754Z",
-    count: 1,
-    items: [
-      {
-        name: "Bad Variant",
-        description: null,
-        displayOrder: 1,
-        variants: [{ price: 4.99 }],
-      },
-    ],
-  }),
-  false,
-  "malformed variants must fail validation",
-);
-
-console.log(
-  "Public website menu-data tests passed: endpoint, validation, accented matching, minimum-price calculation, formatting, and graceful missing-price behavior.",
-);
+console.log("Public menu tests passed: all six prices, category aggregation, modifiers in both labels, exact fallback, Unicode, order, invalid prices, empty/error and DTO validation.");
