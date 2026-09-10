@@ -47,7 +47,7 @@ export function ExperienceStrip() {
           }) => (
             <article
               key={title}
-              className="relative flex min-h-[245px] flex-col items-center justify-center px-7 py-10 text-center sm:px-9 lg:min-h-[270px] lg:py-11"
+              className="relative flex min-h-[205px] flex-col items-center justify-center px-7 py-8 text-center sm:px-9 lg:min-h-[220px] lg:py-9"
             >
               <div className="grid h-14 w-14 place-items-center text-[#df336d]">
                 <Icon

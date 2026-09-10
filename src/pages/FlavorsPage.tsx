@@ -13,7 +13,7 @@ function FlavorCard({ flavor }: { flavor: PublicFlavor }) {
   const badges = displayedDietaryCodes(flavor.dietaryMetadata);
   const allergens = flavor.containsAllergens?.filter(value => value.trim()) ?? [];
   return (
-    <article className="min-w-0 overflow-hidden rounded-[1.35rem] border border-[#102a54]/10 bg-white shadow-sm sm:rounded-[1.6rem]">
+    <article className="min-w-0 overflow-hidden rounded-2xl border border-[#102a54]/10 bg-white shadow-sm">
       <div className="aspect-[4/5] overflow-hidden bg-[#fff3f7]">
         {flavor.imageUrl?.trim() && !failedImage ? (
           <img src={flavor.imageUrl} alt={flavor.name} loading="lazy" decoding="async"

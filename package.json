@@ -16,7 +16,8 @@
     "test:visit-page": "node --experimental-strip-types scripts/test-visit-page.ts",
     "test:visit-page-browser": "node scripts/test-visit-page-browser.cjs",
     "test:about-page": "node --experimental-strip-types scripts/test-about-page.ts",
-    "test:about-page-browser": "node scripts/test-about-page-browser.cjs"
+    "test:about-page-browser": "node scripts/test-about-page-browser.cjs",
+    "test:site-fidelity-browser": "node scripts/test-site-fidelity-browser.cjs"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",

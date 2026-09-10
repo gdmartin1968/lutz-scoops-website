@@ -33,7 +33,7 @@ function MenuItemCard({ item }: { item: PublicMenuItem }) {
   const modifiers = item.variants.filter(isModifierVariant);
   const anchor = menuItemAnchor(item.name);
   return (
-    <article id={anchor ?? undefined} className="scroll-mt-28 rounded-[1.6rem] border border-[#102a54]/10 bg-white p-5 shadow-sm sm:p-6">
+    <article id={anchor ?? undefined} className="scroll-mt-28 rounded-2xl border border-[#102a54]/10 bg-white p-5 shadow-sm sm:p-6">
       <h3 className="text-xl font-black leading-tight tracking-[-0.025em] text-[#102a54] sm:text-2xl">{item.name}</h3>
       {item.description?.trim() && <p className="mt-2 text-sm leading-6 text-[#102a54]/68 sm:text-base">{item.description}</p>}
       {baseVariants.length > 0 && <ul className="mt-5 space-y-2" aria-label={`${item.name} sizes and prices`}>

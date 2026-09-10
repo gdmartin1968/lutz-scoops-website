@@ -18,7 +18,7 @@ export function VisitPage() {
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d]">Come scoop with us</p>
           <h1 className="mt-3 text-4xl font-black uppercase tracking-[-0.045em] text-[#102a54] sm:text-5xl lg:text-6xl">Visit Us</h1>
         </header>
-        <a aria-label="View Lutz Scoops on Google Maps" href={business.directionsUrl} target="_blank" rel="noreferrer" className="relative mt-9 flex h-[260px] overflow-hidden rounded-[1.6rem] border border-[#102a54]/10 bg-[#dff2f9] shadow-xl shadow-[#102a54]/7 sm:mt-12 sm:h-[340px] sm:rounded-[2rem] lg:h-[390px]">
+        <a aria-label="View Lutz Scoops on Google Maps" href={business.directionsUrl} target="_blank" rel="noreferrer" className="relative mt-9 flex h-[260px] overflow-hidden rounded-2xl border border-[#102a54]/10 bg-[#dff2f9] shadow-lg shadow-[#102a54]/7 sm:mt-12 sm:h-[340px] sm:rounded-[1.25rem] lg:h-[390px]">
           <div aria-hidden="true" className="absolute inset-0 opacity-55 [background-image:linear-gradient(32deg,transparent_0%,transparent_46%,white_47%,white_52%,transparent_53%),linear-gradient(145deg,transparent_0%,transparent_35%,white_36%,white_40%,transparent_41%),linear-gradient(90deg,transparent_0%,transparent_68%,#b9dfe9_69%,#b9dfe9_72%,transparent_73%)]" />
           <div className="relative m-auto flex flex-col items-center px-6 text-center">
             <span className="grid h-16 w-16 place-items-center rounded-full bg-[#df336d] text-white shadow-lg shadow-[#102a54]/20"><MapPin size={32} fill="currentColor" aria-hidden="true" /></span>

@@ -16,7 +16,7 @@ export function AboutPage() {
       <div className="mx-auto max-w-[1180px]">
         <header className="text-center"><p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d]">Our neighborhood shop</p><h1 className="mt-3 text-4xl font-black uppercase tracking-[-0.045em] text-[#102a54] sm:text-5xl lg:text-6xl">About Us</h1></header>
         <div className="mt-9 grid items-center gap-9 sm:mt-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
-          <div className="aspect-square overflow-hidden rounded-[1.6rem] border border-[#102a54]/10 bg-[#eaf6fb] shadow-xl shadow-[#102a54]/8 sm:rounded-[2rem]"><img src={storefrontImage} alt="Lutz Scoops storefront on North Dale Mabry Highway" className="h-full w-full object-cover object-right" /></div>
+          <div className="aspect-square overflow-hidden rounded-2xl border border-[#102a54]/10 bg-[#eaf6fb] shadow-lg shadow-[#102a54]/8 sm:rounded-[1.25rem]"><img src={storefrontImage} alt="Lutz Scoops storefront on North Dale Mabry Highway" className="h-full w-full object-cover object-right" /></div>
           <section aria-labelledby="story-heading" className="lg:py-6">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[#df336d]">Our story</p>
             <h2 id="story-heading" className="mt-3 text-3xl font-black uppercase leading-[1.04] tracking-[-0.04em] text-[#102a54] sm:text-4xl lg:text-5xl">Locally owned.<br />Family operated.<br />Community focused.</h2>

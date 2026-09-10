@@ -43,6 +43,11 @@ button {
   font: inherit;
 }
 
+:where(a, button):focus-visible {
+  outline: 3px solid #df336d;
+  outline-offset: 3px;
+}
+
 img {
   display: block;
   max-width: 100%;

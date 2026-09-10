@@ -24,7 +24,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#102a54]/8 bg-white/95 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-[78px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto flex min-h-[72px] max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <a
           href="/#top"
           aria-label="Lutz Scoops home"
@@ -79,7 +79,7 @@ export function Navbar() {
           aria-label="Mobile navigation"
           className="border-t border-[#102a54]/8 bg-white px-5 py-5 lg:hidden"
         >
-          <div className="mx-auto flex max-w-[1440px] flex-col gap-2">
+          <div className="mx-auto flex max-w-[1280px] flex-col gap-2">
             {links.map((link) => (
               <a
                 key={link.href}

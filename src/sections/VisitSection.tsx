@@ -9,14 +9,14 @@ import { business } from "../config/business";
 
 export function VisitSection() {
   return (
-    <section id="visit" className="bg-[#fffaf6] py-24 sm:py-28">
+    <section id="visit" className="bg-[#fffaf6] py-18 sm:py-20">
       <div className="mx-auto grid max-w-[1440px] gap-8 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-12">
-        <div className="rounded-[2.5rem] bg-white p-8 shadow-xl shadow-[#102a54]/6 sm:p-11">
+        <div className="rounded-[1.75rem] bg-white p-8 shadow-xl shadow-[#102a54]/6 sm:p-11">
           <p className="text-sm font-black uppercase tracking-[0.26em] text-[#df336d]">
             Come say hello
           </p>
 
-          <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-6xl">
+          <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-5xl">
             Your neighborhood happy place.
           </h2>
 
@@ -78,7 +78,7 @@ export function VisitSection() {
           </div>
         </div>
 
-        <div className="rounded-[2.5rem] bg-[#df336d] p-8 text-white shadow-xl shadow-[#df336d]/18 sm:p-11">
+        <div className="rounded-[1.75rem] bg-[#df336d] p-8 text-white shadow-xl shadow-[#df336d]/18 sm:p-11">
           <Clock3 size={38} />
 
           <p className="mt-8 text-sm font-black uppercase tracking-[0.26em] text-white/65">
