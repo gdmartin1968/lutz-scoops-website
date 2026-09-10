@@ -7,17 +7,21 @@ const page = read("src/pages/AboutPage.tsx");
 const nav = read("src/components/Navbar.tsx");
 const homeAbout = read("src/sections/AboutSection.tsx");
 const experience = read("src/sections/ExperienceStrip.tsx");
+const footer = read("src/sections/Footer.tsx");
 
 assert.match(app, /path === "\/about" \? <AboutPage/);
+assert.match(app, /<Footer showOwner=\{path !== "\/about"\}/);
+assert.match(footer, /showOwner \? "Northstar Hospitality Group LLC" : "Lutz Scoops"/);
 assert.match(nav, /\{ label: "About", href: "\/about" \}/);
 for (const href of ["/flavors", "/menu", "/visit"]) assert.ok(nav.includes(`href: "${href}"`), href);
 assert.match(page, />About Us</);
-assert.match(page, /Locally operated\.<br \/>Community focused\./);
-assert.match(page, /Northstar Hospitality Group LLC/);
+for (const copy of ["Locally owned.", "Family operated.", "Community focused.", "Stacee and KC Campbell", "January 2021", "June 27, 2026", "Gordon Martin", "JT and Daniel", "official taste tester", "Through different owners and different chapters"]) assert.ok(page.includes(copy), copy);
+assert.doesNotMatch(page, /Northstar Hospitality Group LLC/);
 assert.match(page, /href="\/visit"/);
 assert.match(page, /homepage-storefront-standalone\.png/);
 assert.ok(existsSync(new URL("../public/images/lifestyle/homepage-storefront-standalone.png", import.meta.url)));
-assert.doesNotMatch(page, /\$\d|price|founded|since \d|award-winning|locally sourced|from scratch/i);
-assert.doesNotMatch(page + homeAbout + experience, /family-owned|family-operated|Paradise To Go|previous owner|founder/i);
+assert.doesNotMatch(page, /\$\d|price|award-winning|locally sourced|from scratch|purchased .* from .*Campbell/i);
+assert.doesNotMatch(page, /Northstar Hospitality Group LLC|Paradise To Go|after two subsequent changes in ownership/i);
+assert.doesNotMatch(homeAbout + experience, /Paradise To Go|previous owner|founder/i);
 
 console.log("About page tests passed: route, navigation, authentic image, ownership, positioning, CTA, and factual-copy guardrails.");

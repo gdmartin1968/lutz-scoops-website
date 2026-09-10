@@ -29,7 +29,7 @@ function App() {
         </>}
       </main>
 
-      <Footer />
+      <Footer showOwner={path !== "/about"} />
     </div>
   );
 }
