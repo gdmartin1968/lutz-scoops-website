@@ -1,6 +1,7 @@
 export const business = {
   name: "Lutz Scoops",
   address: { street: "19259 North Dale Mabry Highway", cityStateZip: "Lutz, FL 33548" },
+  location: { latitude: 28.157359, longitude: -82.480821, mapZoom: 17 },
   phone: { display: "727-504-4722", href: "tel:+17275044722" },
   hours: [
     { days: "Monday – Thursday", time: "12 PM – 9 PM" },

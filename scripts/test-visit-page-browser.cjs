@@ -14,15 +14,25 @@ const keepAlive = setInterval(() => {}, 1_000);
   const server = await preview({ root, preview: { host: "127.0.0.1", port: 4178, strictPort: true } });
   const browser = await chromium.launch({ headless: true, channel: "chrome" });
   try {
-    for (const width of [390, 1440]) {
+    for (const width of [375, 430, 768, 1440]) {
       const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
       await page.goto("http://127.0.0.1:4178/visit");
       await page.getByRole("heading", { name: "Visit Us", exact: true }).waitFor();
+      await page.getByRole("region", { name: "Interactive map showing Lutz Scoops" }).waitFor();
+      await page.locator(".leaflet-marker-icon").waitFor();
+      assert.ok(await page.locator(".leaflet-container").isVisible());
+      assert.ok(await page.locator(".leaflet-popup-content").getByText("Lutz Scoops", { exact: true }).isVisible());
+      assert.match(await page.locator(".leaflet-control-attribution").innerText(), /OpenStreetMap/);
+      await page.locator(".leaflet-control-zoom-in").click();
       assert.equal(await page.getByRole("link", { name: "727-504-4722" }).getAttribute("href"), "tel:+17275044722");
-      assert.match(await page.getByRole("link", { name: "Get Directions" }).getAttribute("href"), /19259\+North\+Dale\+Mabry\+Highway/);
-      assert.match(await page.getByRole("link", { name: "View Lutz Scoops on Google Maps" }).getAttribute("href"), /19259\+North\+Dale\+Mabry\+Highway/);
+      for (const link of await page.getByRole("link", { name: "Get Directions" }).all()) {
+        assert.match(await link.getAttribute("href"), /19259\+North\+Dale\+Mabry\+Highway/);
+      }
+      assert.ok(await page.getByRole("img", { name: "Lutz Scoops storefront on North Dale Mabry Highway" }).isVisible());
       assert.deepEqual(await page.locator("main dd").allTextContents(), ["12 PM – 9 PM", "12 PM – 10 PM", "12 PM – 8 PM"]);
-      assert.ok(await page.getByText("19259 North Dale Mabry Highway", { exact: true }).isVisible());
+      assert.ok(await page.getByRole("main").getByRole("link", { name: /Order Online/ }).isVisible());
+      assert.ok(await page.getByRole("navigation", { name: "Explore before your visit" }).getByRole("link", { name: "Menu", exact: true }).isVisible());
+      assert.ok(await page.getByRole("navigation", { name: "Explore before your visit" }).getByRole("link", { name: "Today's Flavors", exact: true }).isVisible());
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "no horizontal overflow");
       await page.screenshot({ path: path.join(output, `visit-${width}.png`), fullPage: true });
       await page.close();
