@@ -19,42 +19,49 @@ const highlights: Array<{
   name: string;
   description: string;
   icon: typeof IceCreamBowl;
+  href: string;
 }> = [
   {
     key: "iceCream",
     name: "Premium Ice Cream",
     description: "Classic favorites and unforgettable specialty flavors.",
     icon: IceCreamBowl,
+    href: "/menu#scoops",
   },
   {
     key: "milkshakes",
     name: "Milkshakes",
     description: "Thick, creamy and blended exactly how you like them.",
     icon: Blend,
+    href: "/menu#milkshakes",
   },
   {
     key: "sundaes",
     name: "Sundaes",
     description: "Loaded with toppings, sauces and plenty of personality.",
     icon: Sparkles,
+    href: "/menu#sundaes",
   },
   {
     key: "coffee",
     name: "Coffee & Espresso",
     description: "Coffeehouse favorites made for sipping or pairing.",
     icon: Coffee,
+    href: "/menu#coffee",
   },
   {
     key: "acaiBowls",
     name: "Açaí Bowls",
     description: "Refreshing bowls topped with fruit and crunch.",
     icon: Leaf,
+    href: "/menu#bowls",
   },
   {
     key: "floatsAndMore",
     name: "Floats & More",
     description: "Root beer floats, specialty drinks and sweet surprises.",
     icon: CupSoda,
+    href: "/menu#floats",
   },
 ];
 
@@ -93,12 +100,13 @@ export function MenuHighlights() {
         </div>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {highlights.map(({ key, name, description, icon: Icon }) => {
+          {highlights.map(({ key, name, description, icon: Icon, href }) => {
             const priceLabel = resolveHighlightPrice(menuItems, key);
 
             return (
-              <article
+              <a
                 key={name}
+                href={href}
                 className="group rounded-[2rem] border border-[#102a54]/8 bg-[#fffaf6] p-7 transition duration-300 hover:-translate-y-2 hover:border-[#df336d]/20 hover:shadow-2xl hover:shadow-[#102a54]/8"
               >
                 <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-[#df336d] shadow-sm transition group-hover:rotate-3 group-hover:scale-105">
@@ -118,7 +126,7 @@ export function MenuHighlights() {
                     {priceLabel}
                   </p>
                 )}
-              </article>
+              </a>
             );
           })}
         </div>

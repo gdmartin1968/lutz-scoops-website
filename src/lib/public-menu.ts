@@ -159,7 +159,7 @@ export async function fetchPublicMenu(
   return payload;
 }
 
-function parsePrice(price: string): number | null {
+export function parsePrice(price: string): number | null {
   const normalized = price.replace(/[$,\s]/g, "");
 
   if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) {
@@ -174,13 +174,58 @@ function parsePrice(price: string): number | null {
 // The seeded public variants use both name and sizeLabel for modifier wording.
 // Match words, not price thresholds or substrings such as "shot": an espresso
 // shot is a base product. Extra Large/Small are legitimate sizes.
-function isModifierVariant(variant: PublicMenuVariant): boolean {
+export function isModifierVariant(variant: PublicMenuVariant): boolean {
   return [variant.name, variant.sizeLabel].some(label => {
     if (!label) return false;
     const words = normalize(label);
     return /\b(?:add|addon|addons|upgrade|upgrades)\b/.test(words) ||
       /\bextra (?:shots?|scoops?|toppings?|syrup|malt|flavou?r|whipped cream)\b/.test(words);
   });
+}
+
+export function formatMenuPrice(price: string): string | null {
+  const value = parsePrice(price);
+  return value === null ? null : `$${value.toFixed(2)}`;
+}
+
+export type PublicMenuGroup = {
+  category: string;
+  id: string;
+  items: PublicMenuItem[];
+};
+
+export function menuSectionId(category: string): string {
+  const key = normalize(category);
+  if (key === "scoops") return "scoops";
+  if (key === "sundaes") return "sundaes";
+  if (key === "coffee" || key === "coffee and cocoa") return "coffee";
+  if (key === "bowls" || key === "acai bowls") return "bowls";
+  if (key === "shakes and floats" || key === "milkshakes") return "shakes-and-floats";
+  return key.replace(/\s+/g, "-") || "more";
+}
+
+export function menuItemAnchor(name: string): string | null {
+  const key = normalize(name);
+  if (key === "milkshakes") return "milkshakes";
+  if (key === "floats and ice cream sodas") return "floats";
+  return null;
+}
+
+export function groupPublicMenuItems(items: PublicMenuItem[]): PublicMenuGroup[] {
+  const groups: PublicMenuGroup[] = [];
+  const byCategory = new Map<string, PublicMenuGroup>();
+  for (const item of items) {
+    const category = item.category?.trim() || "More";
+    const key = normalize(category) || "more";
+    let group = byCategory.get(key);
+    if (!group) {
+      group = { category, id: menuSectionId(category), items: [] };
+      byCategory.set(key, group);
+      groups.push(group);
+    }
+    group.items.push(item);
+  }
+  return groups;
 }
 
 export function getStartingPrice(item: PublicMenuItem): number | null {

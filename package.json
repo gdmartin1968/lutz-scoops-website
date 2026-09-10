@@ -10,7 +10,9 @@
     "test:homepage": "node --experimental-strip-types scripts/test-homepage.ts",
     "preview": "vite preview",
     "test:flavors": "node --experimental-strip-types scripts/test-flavors.ts",
-    "test:public-menu": "node --experimental-strip-types scripts/test-public-menu.ts"
+    "test:public-menu": "node --experimental-strip-types scripts/test-public-menu.ts",
+    "test:menu-page": "node --experimental-strip-types scripts/test-menu-page.ts",
+    "test:menu-page-browser": "node scripts/test-menu-page-browser.cjs"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",
