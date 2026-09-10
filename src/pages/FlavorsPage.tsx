@@ -1,6 +1,7 @@
 import { IceCreamBowl, MapPin, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { displayedDietaryCodes, loadPublicFlavorFeed, type PublicFlavor, type PublicFlavorFeed } from "../lib/public-flavors";
+import { business } from "../config/business";
 
 type AvailabilityState =
   | { status: "loading" }
@@ -88,16 +89,16 @@ export function FlavorsPage() {
           <div className="mx-auto mt-9 max-w-2xl rounded-[1.6rem] border border-[#102a54]/10 bg-white px-6 py-9 text-center shadow-sm sm:p-10">
             <h2 className="text-2xl font-black tracking-[-0.03em]">Let’s check with the scoop crew</h2>
             <p className="mt-3 text-base leading-7 text-[#102a54]/70">We couldn’t load today’s flavors. Please try again in a little while, or call or visit us for current availability.</p>
-            <a href="tel:+17275044722" className="mt-5 inline-flex min-h-11 items-center font-extrabold underline underline-offset-4">Call 727-504-4722</a>
+            <a href={business.phone.href} className="mt-5 inline-flex min-h-11 items-center font-extrabold underline underline-offset-4">Call {business.phone.display}</a>
           </div>
         )}
 
         <div className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
-          <a href="https://lutzscoops.square.site/" target="_blank" rel="noreferrer"
+          <a href={business.orderOnlineUrl} target="_blank" rel="noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]">
             <ShoppingBag size={16} aria-hidden="true" />Order Online
           </a>
-          <a href="/#visit" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/15 bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#102a54] transition hover:border-[#df336d]/40">
+          <a href="/visit" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/15 bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#102a54] transition hover:border-[#df336d]/40">
             <MapPin size={16} aria-hidden="true" />Visit Lutz Scoops
           </a>
         </div>

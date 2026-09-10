@@ -25,7 +25,7 @@ const experiences = [
     title: "Visit Us",
     description: "Lutz Lake Crossing",
     linkLabel: "Get Directions",
-    href: "https://www.google.com/maps/search/?api=1&query=Lutz+Scoops+Lutz+Florida",
+    href: "/visit",
     icon: MapPin,
   },
 ];
@@ -68,8 +68,6 @@ export function ExperienceStrip() {
               {href && linkLabel && (
                 <a
                   href={href}
-                  target="_blank"
-                  rel="noreferrer"
                   className="mt-1 text-sm font-extrabold text-[#0873ae] underline decoration-[#0873ae]/35 underline-offset-4 transition hover:text-[#df336d]"
                 >
                   {linkLabel}

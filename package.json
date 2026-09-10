@@ -12,7 +12,9 @@
     "test:flavors": "node --experimental-strip-types scripts/test-flavors.ts",
     "test:public-menu": "node --experimental-strip-types scripts/test-public-menu.ts",
     "test:menu-page": "node --experimental-strip-types scripts/test-menu-page.ts",
-    "test:menu-page-browser": "node scripts/test-menu-page-browser.cjs"
+    "test:menu-page-browser": "node scripts/test-menu-page-browser.cjs",
+    "test:visit-page": "node --experimental-strip-types scripts/test-visit-page.ts",
+    "test:visit-page-browser": "node scripts/test-visit-page-browser.cjs"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",

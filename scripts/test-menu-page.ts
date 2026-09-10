@@ -51,6 +51,6 @@ for (const href of ["/menu#scoops", "/menu#milkshakes", "/menu#sundaes", "/menu#
   assert.ok(highlights.includes(`href: "${href}"`), href);
 }
 assert.equal((highlights.match(/href: "\/menu#/g) ?? []).length, 6);
-assert.ok(page.includes('href="https://lutzscoops.square.site/"'));
+assert.ok(page.includes("business.orderOnlineUrl"));
 
 console.log("Menu page tests passed: route, ordered grouping, ordered variants, modifiers, empty/error states, anchors, live prices, and CTA.");

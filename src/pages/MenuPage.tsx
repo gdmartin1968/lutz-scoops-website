@@ -9,6 +9,7 @@ import {
   type PublicMenuItem,
   type PublicMenuVariant,
 } from "../lib/public-menu";
+import { business } from "../config/business";
 
 type MenuState =
   | { status: "loading" }
@@ -82,7 +83,7 @@ export function MenuPage() {
         <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d] sm:text-sm">Scoops, sips &amp; more</p>
         <h1 className="mt-3 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-5xl lg:text-6xl">Our Menu</h1>
         <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#102a54]/70 sm:text-lg">See what we’re serving, from handcrafted scoops to coffee, shakes and bowls.</p>
-        <a href="https://lutzscoops.square.site/" target="_blank" rel="noreferrer" className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]">
+        <a href={business.orderOnlineUrl} target="_blank" rel="noreferrer" className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]">
           <ShoppingBag size={17} aria-hidden="true" />Order Online
         </a>
       </section>
@@ -112,7 +113,7 @@ export function MenuPage() {
             <AlertCircle className="mx-auto text-[#df336d]" size={42} aria-hidden="true" />
             <h2 className="mt-4 text-2xl font-black text-[#102a54]">Our menu is taking a moment</h2>
             <p className="mt-3 leading-7 text-[#102a54]/70">We couldn’t load the current menu. Please try again shortly, or call us for today’s options.</p>
-            <a href="tel:+17275044722" className="mt-5 inline-flex min-h-11 items-center font-extrabold underline underline-offset-4">Call 727-504-4722</a>
+            <a href={business.phone.href} className="mt-5 inline-flex min-h-11 items-center font-extrabold underline underline-offset-4">Call {business.phone.display}</a>
           </div>
         )}
       </div>

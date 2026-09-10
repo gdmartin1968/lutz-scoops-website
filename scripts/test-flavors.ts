@@ -60,6 +60,7 @@ for (const file of ["src/sections/Hero.tsx", "src/sections/FeaturedFlavors.tsx",
 const nav = read("src/components/Navbar.tsx");
 assert.ok(nav.includes('{ label: "Flavors", href: "/flavors" }'));
 assert.equal(nav.match(/links.map/g)?.length, 2, "desktop and mobile share canonical links");
-for (const file of ["src/pages/FlavorsPage.tsx", "src/components/Navbar.tsx", "src/sections/Hero.tsx", "src/sections/VisitSection.tsx"])
-  assert.ok(read(file).includes('href="https://lutzscoops.square.site/"'), file);
+for (const file of ["src/pages/FlavorsPage.tsx", "src/components/Navbar.tsx", "src/sections/VisitSection.tsx"])
+  assert.ok(read(file).includes("business.orderOnlineUrl"), file);
+assert.ok(read("src/sections/Hero.tsx").includes('href="https://lutzscoops.square.site/"'));
 console.log("Flavors integration assertions passed: collection, count/order, dietary, empty/error, request, routing, images, SEO and navigation.");
