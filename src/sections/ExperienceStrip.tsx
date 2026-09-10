@@ -18,7 +18,7 @@ const experiences = [
   },
   {
     title: "Locally Owned",
-    description: "Locally owned. Family operated. Proud to serve our community.",
+    description: "Locally operated. Community focused. Proud to serve Lutz.",
     icon: Users,
   },
   {

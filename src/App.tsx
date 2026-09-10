@@ -1,6 +1,7 @@
 import { FlavorsPage } from "./pages/FlavorsPage";
 import { MenuPage } from "./pages/MenuPage";
 import { VisitPage } from "./pages/VisitPage";
+import { AboutPage } from "./pages/AboutPage";
 import { Navbar } from "./components/Navbar";
 import { AboutSection } from "./sections/AboutSection";
 import { ExperienceStrip } from "./sections/ExperienceStrip";
@@ -18,7 +19,7 @@ function App() {
       <Navbar />
 
       <main>
-        {path === "/flavors" ? <FlavorsPage /> : path === "/menu" ? <MenuPage /> : path === "/visit" ? <VisitPage /> : <>
+        {path === "/flavors" ? <FlavorsPage /> : path === "/menu" ? <MenuPage /> : path === "/visit" ? <VisitPage /> : path === "/about" ? <AboutPage /> : <>
         <Hero />
         <ExperienceStrip />
         <FeaturedFlavors />

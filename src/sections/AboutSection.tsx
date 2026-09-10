@@ -9,18 +9,17 @@ export function AboutSection() {
         </div>
 
         <p className="mt-7 text-sm font-black uppercase tracking-[0.26em] text-[#0873ae]">
-          Locally owned
+          About Lutz Scoops
         </p>
 
         <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-6xl">
-          Built around great treats and genuine hospitality.
+          Locally operated. Community focused.
         </h2>
 
         <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-[#102a54]/64">
-          Lutz Scoops is a locally owned, family-operated ice cream and coffee
-          shop built around great treats, genuine hospitality, and the people
-          who make our community special. We believe every visit should feel
-          welcoming, memorable and just a little sweeter.
+          Lutz Scoops is locally operated by Northstar Hospitality Group LLC,
+          with a focus on friendly service, a welcoming experience and serving
+          the Lutz community well.
         </p>
       </div>
     </section>
