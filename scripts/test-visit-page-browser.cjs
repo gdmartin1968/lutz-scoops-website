@@ -29,6 +29,13 @@ const keepAlive = setInterval(() => {}, 1_000);
         assert.match(await link.getAttribute("href"), /19259\+North\+Dale\+Mabry\+Highway/);
       }
       assert.ok(await page.getByRole("img", { name: "Lutz Scoops storefront on North Dale Mabry Highway" }).isVisible());
+      const storefront = page.getByRole("img", { name: "Lutz Scoops storefront on North Dale Mabry Highway" });
+      const image = await storefront.evaluate(element => ({ src: element.getAttribute("src"), naturalWidth: element.naturalWidth, naturalHeight: element.naturalHeight, width: element.clientWidth, height: element.clientHeight }));
+      assert.equal(image.src, "/images/lifestyle/visit-storefront.png");
+      assert.deepEqual([image.naturalWidth, image.naturalHeight], [1536, 1152]);
+      assert.ok(Math.abs(image.width / image.height - 4 / 3) < 0.02, "storefront keeps its natural 4:3 ratio");
+      assert.ok(await page.getByText('Look for the big “ICE CREAM” sign in the plaza — we\'re right underneath it.', { exact: true }).isVisible());
+      assert.equal(await page.getByText(/Lutz Scoops sign along North Dale Mabry Highway/).count(), 0);
       assert.deepEqual(await page.locator("main dd").allTextContents(), ["12 PM – 9 PM", "12 PM – 10 PM", "12 PM – 8 PM"]);
       assert.ok(await page.getByRole("main").getByRole("link", { name: /Order Online/ }).isVisible());
       assert.ok(await page.getByRole("navigation", { name: "Explore before your visit" }).getByRole("link", { name: "Menu", exact: true }).isVisible());

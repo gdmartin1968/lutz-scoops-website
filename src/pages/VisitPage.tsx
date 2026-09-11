@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { InteractiveVisitMap } from "../components/InteractiveVisitMap";
 import { business } from "../config/business";
 
-const storefrontImage = "/images/lifestyle/homepage-storefront-standalone.png";
+const storefrontImage = "/images/lifestyle/visit-storefront.png";
 
 export function VisitPage() {
   useEffect(() => {
@@ -28,12 +28,12 @@ export function VisitPage() {
 
         <div className="mx-auto mt-9 grid max-w-[980px] gap-9 sm:mt-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14">
           <figure className="overflow-hidden rounded-2xl border border-[#102a54]/10 bg-white shadow-sm">
-            <div className="aspect-[4/3] overflow-hidden">
-              <img src={storefrontImage} alt="Lutz Scoops storefront on North Dale Mabry Highway" className="h-full w-full origin-right scale-[1.35] object-cover object-right" />
+            <div className="overflow-hidden">
+              <img src={storefrontImage} alt="Lutz Scoops storefront on North Dale Mabry Highway" className="block h-auto w-full" />
             </div>
             <figcaption className="p-5 sm:p-6">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-[#df336d]">Look for us</p>
-              <p className="mt-2 font-bold leading-7 text-[#102a54]">Look for the Lutz Scoops sign along North Dale Mabry Highway.</p>
+              <p className="mt-2 font-bold leading-7 text-[#102a54]">Look for the big “ICE CREAM” sign in the plaza — we&apos;re right underneath it.</p>
             </figcaption>
           </figure>
 
