@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test:homepage": "node --experimental-strip-types scripts/test-homepage.ts",
+    "test:homepage-browser": "node scripts/test-homepage-browser.cjs",
     "preview": "vite preview",
     "test:flavors": "node --experimental-strip-types scripts/test-flavors.ts",
     "test:public-menu": "node --experimental-strip-types scripts/test-public-menu.ts",

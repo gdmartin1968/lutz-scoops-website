@@ -67,4 +67,16 @@ assert.doesNotMatch(
   "legacy hardcoded homepage pricing map must not remain",
 );
 
+const hero = readFileSync(new URL("../src/sections/Hero.tsx", import.meta.url), "utf8");
+const collage = readFileSync(new URL("../src/components/HomepageCollage.tsx", import.meta.url), "utf8");
+assert.match(hero, /HomepageCollage/);
+assert.match(hero, /homepage-lifestyle-collage-v2\.png/);
+assert.match(hero, /lg:\[clip-path:inset\(0_46%_0_0\)\]/, "the superseded collage pixels must be clipped from presentation");
+for (const asset of ["five-flavor-cups.png", "family-south-asian.png", "milkshake.png", "coffee.png", "friends.png", "lutz-scoops-sign.png", "good-vibes-neon.png"]) assert.ok(collage.includes(asset), asset);
+assert.match(collage, /approvedFamilyImages/);
+assert.match(collage, /approvedFamilyImages\.length < 2/);
+assert.match(collage, /FAMILY_ROTATION_MS = 8000/);
+assert.match(collage, /useReducedMotion/);
+assert.doesNotMatch(collage, /sundae|cone/i);
+
 console.log("Homepage integration assertions passed.");

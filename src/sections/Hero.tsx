@@ -7,6 +7,7 @@ import {
   motion,
   useReducedMotion,
 } from "motion/react";
+import { HomepageCollage } from "../components/HomepageCollage";
 import {
   useEffect,
   useState,
@@ -27,7 +28,7 @@ const heroSlides: HeroSlide[] = [
   {
     id: "authentic-lifestyle-collage",
     image:
-      "/images/lifestyle/homepage-lifestyle-collage.png",
+      "/images/lifestyle/homepage-lifestyle-collage-v2.png",
     alt:
       "Lutz Scoops ice cream, coffee, desserts, families and friends",
     theme: "light",
@@ -171,13 +172,15 @@ export function Hero() {
               <img
                 src={slide.image}
                 alt={slide.alt}
-                className="h-full w-full object-cover object-center"
+                className={slide.id === "authentic-lifestyle-collage" ? "h-full w-full object-cover object-center lg:[clip-path:inset(0_46%_0_0)]" : "h-full w-full object-cover object-center"}
                 fetchPriority={
                   activeSlide === 0
                     ? "high"
                     : "auto"
                 }
               />
+
+              {slide.id === "authentic-lifestyle-collage" ? <HomepageCollage /> : null}
 
               {isDark ? (
                 <>
