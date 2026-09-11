@@ -69,13 +69,19 @@ assert.doesNotMatch(
 
 const hero = readFileSync(new URL("../src/sections/Hero.tsx", import.meta.url), "utf8");
 const collage = readFileSync(new URL("../src/components/HomepageCollage.tsx", import.meta.url), "utf8");
-assert.match(hero, /HomepageCollage/);
+assert.match(hero, /HomepageCollage visible=\{slide\.id === "authentic-lifestyle-collage"\}/);
 assert.match(hero, /homepage-lifestyle-collage-v2\.png/);
 assert.match(hero, /lg:\[clip-path:inset\(0_46%_0_0\)\]/, "the superseded collage pixels must be clipped from presentation");
-for (const asset of ["five-flavor-cups.png", "family-south-asian.png", "milkshake.png", "coffee.png", "friends.png", "lutz-scoops-sign.png", "good-vibes-neon.png"]) assert.ok(collage.includes(asset), asset);
+for (const asset of ["five-flavor-cups.png", "milkshake.png", "coffee.png", "friends.png", "lutz-scoops-sign.png", "good-vibes-neon.png"]) assert.ok(collage.includes(asset), asset);
+for (const family of ["family-01.png", "family-02.png", "family-03.png", "family-04.png", "family-05.png"]) assert.ok(collage.includes(family), family);
+assert.equal((collage.match(/family-0[1-5]\.png/g) ?? []).length, 5);
 assert.match(collage, /approvedFamilyImages/);
 assert.match(collage, /approvedFamilyImages\.length < 2/);
+assert.match(collage, /HomepageCollage\(\{ visible \}/);
 assert.match(collage, /FAMILY_ROTATION_MS = 8000/);
+assert.match(collage, /AnimatePresence initial=\{false\}/);
+assert.match(collage, /absolute inset-0 h-full w-full object-cover/);
+assert.match(collage, /alt=""/);
 assert.match(collage, /useReducedMotion/);
 assert.doesNotMatch(collage, /sundae|cone/i);
 

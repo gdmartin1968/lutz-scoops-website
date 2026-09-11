@@ -180,8 +180,6 @@ export function Hero() {
                 }
               />
 
-              {slide.id === "authentic-lifestyle-collage" ? <HomepageCollage /> : null}
-
               {isDark ? (
                 <>
                   <div className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-[#071427]/64 via-[#071427]/28 to-transparent sm:w-[56%] lg:w-[48%]" />
@@ -263,6 +261,8 @@ export function Hero() {
               </motion.div>
             </motion.div>
           </AnimatePresence>
+
+          <HomepageCollage visible={slide.id === "authentic-lifestyle-collage"} />
 
           <div
             aria-label="Choose homepage image"

@@ -30,13 +30,16 @@ const keepAlive = setInterval(() => {}, 1_000);
         await collage.waitFor();
         const expected = [
           ["Five branded Lutz Scoops cups with five different visible ice cream flavors", "five-flavor-cups.png"],
-          ["A family of four enjoying ice cream together", "family-south-asian.png"],
           ["A boy drinking a whipped cream and chocolate drizzle milkshake", "milkshake.png"],
           ["Coffee pouring into a branded Lutz Scoops mug", "coffee.png"],
           ["Two friends enjoying Lutz Scoops drinks", "friends.png"],
           ["Lutz Scoops wall sign", "lutz-scoops-sign.png"],
           ["Good ice cream, good coffee, good vibes neon sign", "good-vibes-neon.png"],
         ];
+        const family = collage.locator("[data-family-slide]");
+        await family.waitFor();
+        assert.match(await family.getAttribute("src"), /family-01\.png/);
+        assert.equal(await family.getAttribute("alt"), "");
         for (const [alt, filename] of expected) {
           const image = collage.getByRole("img", { name: alt });
           await image.waitFor();
@@ -51,6 +54,34 @@ const keepAlive = setInterval(() => {}, 1_000);
       await page.screenshot({ path: path.join(output, `homepage-${width}.png`), fullPage: false });
       await page.close();
     }
+    const rotationPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await rotationPage.goto("http://127.0.0.1:4179/");
+    const familyPanel = rotationPage.locator("[data-family-panel]");
+    assert.ok(await familyPanel.boundingBox());
+    await familyPanel.screenshot({ path: path.join(output, "family-01.png") });
+    const changeTimes = [];
+    for (const slide of [2, 3, 4, 5]) {
+      await rotationPage.locator(`[data-family-slide="${slide}"]`).waitFor({ state: "attached", timeout: 10_000 });
+      changeTimes.push(Date.now());
+      await rotationPage.waitForTimeout(700);
+      assert.equal(await rotationPage.locator("[data-family-slide]").count(), 1, "crossfade settles to one slide");
+      await rotationPage.getByRole("button", { name: "Show homepage image 1" }).click();
+      await familyPanel.waitFor({ state: "visible" });
+      await familyPanel.screenshot({ path: path.join(output, `family-0${slide}.png`) });
+    }
+    for (let index = 1; index < changeTimes.length; index++) {
+      const interval = changeTimes[index] - changeTimes[index - 1];
+      assert.ok(interval >= 7_200 && interval <= 8_800, `family cadence ${interval}ms`);
+    }
+    await rotationPage.close();
+
+    const reducedPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+    await reducedPage.goto("http://127.0.0.1:4179/");
+    assert.match(await reducedPage.locator("[data-family-slide]").getAttribute("src"), /family-01\.png/);
+    await reducedPage.waitForTimeout(8_300);
+    assert.match(await reducedPage.locator("[data-family-slide]").getAttribute("src"), /family-01\.png/);
+    await reducedPage.close();
+
     console.log(`Focused homepage collage QA passed; screenshots: ${output}`);
   } finally {
     await browser.close();
