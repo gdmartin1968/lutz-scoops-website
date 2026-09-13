@@ -94,7 +94,7 @@ export function FlavorsPage() {
         )}
 
         <div className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
-          <a href={business.orderOnlineUrl} target="_blank" rel="noreferrer"
+          <a href={business.orderInfoPath} target="_blank" rel="noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]">
             <ShoppingBag size={16} aria-hidden="true" />Order Online
           </a>

@@ -9,5 +9,6 @@ export const business = {
     { days: "Sunday", time: "12 PM – 8 PM" },
   ],
   directionsUrl: "https://www.google.com/maps/search/?api=1&query=19259+North+Dale+Mabry+Highway+Lutz+FL+33548",
-  orderOnlineUrl: "https://lutzscoops.square.site/",
+  orderInfoPath: "/order.html",
+  squareOrderingUrl: "https://lutzscoops.square.site/",
 } as const;

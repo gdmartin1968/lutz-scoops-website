@@ -71,7 +71,7 @@ const { pathToFileURL } = require("node:url");
         const visibleOverflow=await page.locator("h1,h2,article p,article li").evaluateAll(nodes=>nodes.some(n=>n.scrollWidth>n.clientWidth+1));
         assert.equal(visibleOverflow,false,"headings, descriptions and badges fit");
         for(const link of await page.getByRole("link",{name:"Order Online",exact:true}).all()){
-          assert.equal(await link.getAttribute("href"),"https://lutzscoops.square.site/");
+          assert.equal(await link.getAttribute("href"),"/order.html");
         }
         if(width<1024){
           await page.getByRole("button",{name:"Open navigation"}).click();

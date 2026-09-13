@@ -1,4 +1,4 @@
-import { Clock3, ExternalLink, MapPin, Navigation, Phone, ShoppingBag, Utensils } from "lucide-react";
+import { Clock3, MapPin, Navigation, Phone, ShoppingBag, Utensils } from "lucide-react";
 import { useEffect } from "react";
 import { InteractiveVisitMap } from "../components/InteractiveVisitMap";
 import { business } from "../config/business";
@@ -57,7 +57,7 @@ export function VisitPage() {
 
         <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-12 sm:flex-row sm:flex-wrap">
           <a href={business.directionsUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#df336d] px-8 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]"><Navigation size={17} aria-hidden="true" />Get Directions</a>
-          <a href={business.orderOnlineUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/15 bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#102a54] transition hover:border-[#df336d]/40"><ShoppingBag size={16} aria-hidden="true" />Order Online<ExternalLink size={14} aria-hidden="true" /></a>
+          <a href={business.orderInfoPath} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/15 bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#102a54] transition hover:border-[#df336d]/40"><ShoppingBag size={16} aria-hidden="true" />Order Online</a>
         </div>
         <nav aria-label="Explore before your visit" className="mt-5 flex items-center justify-center gap-6 text-sm font-extrabold text-[#0873ae]">
           <a href="/menu" className="inline-flex min-h-11 items-center gap-2 underline decoration-[#0873ae]/30 underline-offset-4 hover:text-[#df336d]"><Utensils size={16} aria-hidden="true" />Menu</a>

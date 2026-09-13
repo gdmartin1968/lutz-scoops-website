@@ -33,7 +33,7 @@ const keepAlive = setInterval(() => {}, 1_000);
           assert.deepEqual(await page.locator("main section[id] > div:first-child h2").allTextContents(), ["Scoops", "Milkshakes", "Sundaes", "Coffee & Cocoa", "Bowls", "Shakes & Floats", "Floats & Ice Cream Sodas"]);
           assert.deepEqual(await page.locator("#milkshakes li span:first-child").allTextContents(), ["16 oz", "20 oz", "Add Malt Powder", "Vegan Milkshake Upgrade"]);
           assert.equal(await page.locator("#milkshakes h4", { hasText: "Add-ons & upgrades" }).count(), 1);
-          assert.equal(await page.getByRole("main").getByRole("link", { name: "Order Online", exact: true }).getAttribute("href"), "https://lutzscoops.square.site/");
+          assert.equal(await page.getByRole("main").getByRole("link", { name: "Order Online", exact: true }).getAttribute("href"), "/order.html");
         } else if (state === "empty") {
           await page.getByRole("heading", { name: "Our menu is being refreshed" }).waitFor();
           assert.equal(await page.locator("article").count(), 0);
