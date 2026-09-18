@@ -21,25 +21,28 @@ const keepAlive = setInterval(() => {}, 1_000);
     for (const state of ["populated", "empty", "error"]) {
       for (const width of [390, 1440]) {
         const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+        let releaseResponse;
+        const responseGate = new Promise(resolve => { releaseResponse = resolve; });
         await page.route(api, async route => {
-          await new Promise(resolve => setTimeout(resolve, 80));
+          await responseGate;
           await route.fulfill({ status: state === "error" ? 503 : 200, contentType: "application/json", body: JSON.stringify({ generatedAt: "2026-09-10T12:00:00Z", count: state === "populated" ? fixtures.length : 0, items: state === "populated" ? fixtures : [] }) });
         });
         await page.goto("http://127.0.0.1:4177/menu");
         await page.getByRole("heading", { name: "Our Menu", exact: true }).waitFor();
         await page.getByRole("status").waitFor();
+        releaseResponse();
         if (state === "populated") {
           await page.getByRole("heading", { name: "Scoops", exact: true, level: 2 }).waitFor();
           assert.deepEqual(await page.locator("main section[id] > div:first-child h2").allTextContents(), ["Scoops", "Milkshakes", "Sundaes", "Coffee & Cocoa", "Bowls", "Shakes & Floats", "Floats & Ice Cream Sodas"]);
           assert.deepEqual(await page.locator("#milkshakes li span:first-child").allTextContents(), ["16 oz", "20 oz", "Add Malt Powder", "Vegan Milkshake Upgrade"]);
           assert.equal(await page.locator("#milkshakes h4", { hasText: "Add-ons & upgrades" }).count(), 1);
-          assert.equal(await page.getByRole("main").getByRole("link", { name: "Order Online", exact: true }).getAttribute("href"), "/order.html");
+          assert.equal(await page.getByRole("main").getByRole("link", { name: "Order Online", exact: true }).getAttribute("href"), "/order-online");
         } else if (state === "empty") {
           await page.getByRole("heading", { name: "Our menu is being refreshed" }).waitFor();
           assert.equal(await page.locator("article").count(), 0);
         } else {
           await page.getByRole("heading", { name: "Our menu is taking a moment" }).waitFor();
-          assert.equal(await page.getByRole("link", { name: "Call 727-504-4722" }).count(), 1);
+          assert.equal(await page.getByRole("contentinfo").getByRole("link", { name: "727-504-4722" }).getAttribute("href"), "tel:+17275044722");
         }
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "no horizontal overflow");
         await page.screenshot({ path: path.join(output, `${state}-${width}.png`), fullPage: true });

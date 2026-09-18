@@ -1,7 +1,7 @@
 import { ArrowRight, MapPin } from "lucide-react";
 import { useEffect } from "react";
 
-const storefrontImage = "/images/lifestyle/homepage-storefront-standalone.png";
+import { CommunityPhotos } from "../components/CommunityPhotos";
 
 export function AboutPage() {
   useEffect(() => {
@@ -12,15 +12,15 @@ export function AboutPage() {
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
   }, []);
   return (
-    <div className="bg-[#fffaf4] px-5 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+    <div className="bg-[#fffaf4] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14">
       <div className="mx-auto max-w-[1180px]">
         <header className="text-center"><p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d]">Our neighborhood shop</p><h1 className="mt-3 text-4xl font-black uppercase tracking-[-0.045em] text-[#102a54] sm:text-5xl lg:text-6xl">About Us</h1></header>
-        <div className="mt-9 grid items-center gap-9 sm:mt-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
-          <div className="aspect-square overflow-hidden rounded-2xl border border-[#102a54]/10 bg-[#eaf6fb] shadow-lg shadow-[#102a54]/8 sm:rounded-[1.25rem]"><img src={storefrontImage} alt="Lutz Scoops storefront on North Dale Mabry Highway" className="h-full w-full object-cover object-right" /></div>
+        <div className="mt-8 grid items-start gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
+          <figure className="overflow-hidden rounded-2xl border border-[#102a54]/10 bg-[#eaf6fb] shadow-lg shadow-[#102a54]/8"><CommunityPhotos className="aspect-[4/3] w-full" /><figcaption className="bg-white px-5 py-3 text-sm font-bold text-[#102a54]/65">A neighborhood place for treats and time together.</figcaption></figure>
           <section aria-labelledby="story-heading" className="lg:py-6">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[#df336d]">Our story</p>
             <h2 id="story-heading" className="mt-3 text-3xl font-black uppercase leading-[1.04] tracking-[-0.04em] text-[#102a54] sm:text-4xl lg:text-5xl">Locally owned.<br />Family operated.<br />Community focused.</h2>
-            <div className="mt-6 max-w-2xl space-y-4 text-base font-medium leading-7 text-[#102a54]/72 sm:leading-8">
+            <div className="mt-5 max-w-2xl space-y-3 text-sm font-medium leading-6 text-[#102a54]/72 sm:text-base sm:leading-7">
               <p>Lutz Scoops began as a family business in January 2021, when Stacee and KC Campbell opened the shop at the height of the pandemic. From the beginning, Lutz Scoops became part of the Lutz community—a neighborhood spot built around great ice cream, friendly faces, and a commitment to the community it serves.</p>
               <p>On June 27, 2026, Gordon Martin took ownership of Lutz Scoops, beginning the next chapter of the shop’s story as a locally owned and family-operated business.</p>
               <p>Before Lutz Scoops, Gordon spent more than a decade running his own small preschool in Pinellas County. After moving from Clearwater to Wesley Chapel, he decided it was time for a change of pace. Trading preschool classrooms for ice cream, coffee, and conversations with neighbors has turned out to be a pretty enjoyable change.</p>

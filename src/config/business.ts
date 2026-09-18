@@ -1,3 +1,5 @@
+import { commerce } from "./commerce.ts";
+
 export const business = {
   name: "Lutz Scoops",
   address: { street: "19259 North Dale Mabry Highway", cityStateZip: "Lutz, FL 33548" },
@@ -9,6 +11,6 @@ export const business = {
     { days: "Sunday", time: "12 PM – 8 PM" },
   ],
   directionsUrl: "https://www.google.com/maps/search/?api=1&query=19259+North+Dale+Mabry+Highway+Lutz+FL+33548",
-  orderInfoPath: "/order.html",
-  squareOrderingUrl: "https://lutzscoops.square.site/",
+  orderInfoPath: commerce.gatewayPath,
+  squareOrderingUrl: commerce.providers[0].destinationUrl,
 } as const;

@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  Blend,
-  Coffee,
-  CupSoda,
-  IceCreamBowl,
-  Leaf,
-  Sparkles,
-} from "lucide-react";
-import {
   fetchPublicMenu,
+  getStartingPrice,
+  formatMenuPrice,
   resolveHighlightPrice,
   type MenuHighlightKey,
   type PublicMenuItem,
@@ -18,49 +12,56 @@ const highlights: Array<{
   key: MenuHighlightKey;
   name: string;
   description: string;
-  icon: typeof IceCreamBowl;
+  image: string;
+  alt: string;
   href: string;
 }> = [
   {
     key: "iceCream",
     name: "Premium Ice Cream",
-    description: "Classic favorites and unforgettable specialty flavors.",
-    icon: IceCreamBowl,
+    description: "Your favorite flavors, freshly scooped.",
+    image: "/images/flavors/ube.png",
+    alt: "Ube ice cream in a branded Lutz Scoops cup",
     href: "/menu#scoops",
   },
   {
     key: "milkshakes",
     name: "Milkshakes",
-    description: "Thick, creamy and blended exactly how you like them.",
-    icon: Blend,
+    description: "Thick, creamy, whipped-cream topped.",
+    image: "/images/lifestyle/hero-collage/friends.png",
+    alt: "Adult customers enjoying topped milkshakes at Lutz Scoops",
     href: "/menu#milkshakes",
   },
   {
     key: "sundaes",
     name: "Sundaes",
-    description: "Loaded with toppings, sauces and plenty of personality.",
-    icon: Sparkles,
+    description: "Ice cream, rich sauces & favorite toppings.",
+    image: "/images/menu/brownie-sundae-v2.webp",
+    alt: "Three-scoop Brownie Sundae with three cherries atop whipped cream over a brownie base",
     href: "/menu#sundaes",
   },
   {
     key: "coffee",
     name: "Coffee & Espresso",
-    description: "Coffeehouse favorites made for sipping or pairing.",
-    icon: Coffee,
+    description: "Espresso shots & cozy coffee favorites.",
+    image: "/images/menu/affogato-espresso-v2.webp",
+    alt: "Affogato with espresso pouring over vanilla ice cream, beside a separate espresso",
     href: "/menu#coffee",
   },
   {
     key: "acaiBowls",
     name: "Açaí Bowls",
-    description: "Refreshing bowls topped with fruit and crunch.",
-    icon: Leaf,
+    description: "Fruit, granola & a drizzle of honey.",
+    image: "/images/menu/acai-cup-v2.webp",
+    alt: "Purple açaí in a tall clear plastic cup with strawberries, granola and honey",
     href: "/menu#bowls",
   },
   {
     key: "floatsAndMore",
     name: "Floats & More",
-    description: "Root beer floats, specialty drinks and sweet surprises.",
-    icon: CupSoda,
+    description: "Classic ice cream floats & sodas.",
+    image: "/images/menu/root-beer-float.webp",
+    alt: "Root beer float with vanilla ice cream",
     href: "/menu#floats",
   },
 ];
@@ -86,46 +87,52 @@ export function MenuHighlights() {
     };
   }, []);
 
+  const brownie = menuItems.find(item => item.name.trim().toLowerCase() === "brownie sundae");
+  const brownieStartingPrice = brownie ? getStartingPrice(brownie) : null;
+  const browniePrice = brownieStartingPrice === null ? null : formatMenuPrice(String(brownieStartingPrice));
+
   return (
-    <section id="menu" className="bg-white py-18 sm:py-20">
+    <section id="menu" className="bg-white py-12 sm:py-14">
       <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-black uppercase tracking-[0.26em] text-[#df336d]">
             More than scoops
           </p>
 
-          <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-5xl">
+          <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-[#102a54] sm:text-4xl">
             Something delicious for everyone.
           </h2>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
-          {highlights.map(({ key, name, description, icon: Icon, href }) => {
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {highlights.map(({ key, name, description, image, alt, href }) => {
             const priceLabel = resolveHighlightPrice(menuItems, key);
 
             return (
               <a
                 key={name}
                 href={href}
-                className="group rounded-[1.35rem] border border-[#102a54]/8 bg-[#fffaf6] p-6 transition duration-300 hover:-translate-y-2 hover:border-[#df336d]/20 hover:shadow-2xl hover:shadow-[#102a54]/8"
+                className="group grid grid-cols-[42%_1fr] overflow-hidden rounded-2xl border border-[#102a54]/8 bg-[#fffaf6] transition duration-300 hover:-translate-y-1 hover:border-[#df336d]/20 hover:shadow-lg"
               >
-                <div className="grid h-14 w-14 place-items-center rounded-xl bg-white text-[#df336d] shadow-sm transition group-hover:rotate-3 group-hover:scale-105">
-                  <Icon size={27} />
+                <div className="aspect-square self-center overflow-hidden bg-[#f4ece3]">
+                  <img src={image} alt={alt} width={400} height={400} loading="lazy" className={`h-full w-full ${key === "sundaes" ? "bg-[#2b241e] object-contain" : "object-cover"} ${key === "milkshakes" ? "object-right" : ""}`} />
                 </div>
+                <div className="flex min-w-0 flex-col justify-center p-4">
 
-                <h3 className="mt-5 text-xl font-black tracking-tight text-[#102a54]">
+                <h3 className="text-lg font-black leading-tight tracking-tight text-[#102a54]">
                   {name}
                 </h3>
 
-                <p className="mt-3 leading-7 text-[#102a54]/62">
-                  {description}
+                <p className="mt-2 text-sm leading-5 text-[#102a54]/62">
+                  {key === "sundaes" ? <>Pictured: Brownie Sundae{browniePrice && <> — <span data-pictured-price>{browniePrice}</span></>}</> : description}
                 </p>
 
                 {priceLabel && (
-                  <p className="mt-5 text-sm font-black uppercase tracking-[0.08em] text-[#0873ae]">
-                    {priceLabel}
+                  <p data-category-price={priceLabel} className="mt-3 text-xs font-black uppercase tracking-[0.08em] text-[#0873ae]">
+                    {key === "sundaes" ? `Sundaes ${priceLabel.toLowerCase()}` : priceLabel}
                   </p>
                 )}
+                </div>
               </a>
             );
           })}

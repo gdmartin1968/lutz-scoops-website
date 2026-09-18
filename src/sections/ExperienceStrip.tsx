@@ -47,21 +47,21 @@ export function ExperienceStrip() {
           }) => (
             <article
               key={title}
-              className="relative flex min-h-[205px] flex-col items-center justify-center px-7 py-8 text-center sm:px-9 lg:min-h-[220px] lg:py-9"
+              className="relative flex min-h-[150px] flex-col items-center justify-center px-6 py-6 text-center sm:px-8 lg:min-h-[160px]"
             >
-              <div className="grid h-14 w-14 place-items-center text-[#df336d]">
+              <div className="grid h-11 w-11 place-items-center text-[#df336d]">
                 <Icon
-                  size={42}
+                  size={34}
                   strokeWidth={1.8}
                   aria-hidden="true"
                 />
               </div>
 
-              <h2 className="mt-4 text-sm font-black uppercase tracking-[0.04em] text-[#102a54]">
+              <h2 className="mt-3 text-xs font-black uppercase tracking-[0.06em] text-[#102a54]">
                 {title}
               </h2>
 
-              <p className="mt-3 max-w-[230px] text-sm font-medium leading-6 text-[#102a54]/74">
+              <p className="mt-2 max-w-[230px] text-xs font-medium leading-5 text-[#102a54]/70 sm:text-sm">
                 {description}
               </p>
 

@@ -15,14 +15,14 @@ export function VisitPage() {
   }, []);
 
   return (
-    <div className="bg-[#fffaf4] px-5 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+    <div className="bg-[#fffaf4] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14">
       <div className="mx-auto max-w-[1120px]">
         <header className="text-center">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d]">Come scoop with us</p>
           <h1 className="mt-3 text-4xl font-black uppercase tracking-[-0.045em] text-[#102a54] sm:text-5xl lg:text-6xl">Visit Us</h1>
         </header>
 
-        <div className="relative z-0 mt-9 overflow-hidden rounded-2xl border border-[#102a54]/10 bg-[#dff2f9] shadow-lg shadow-[#102a54]/7 sm:mt-12 sm:rounded-[1.25rem]">
+        <div className="relative z-0 mt-8 overflow-hidden rounded-2xl border border-[#102a54]/10 bg-[#dff2f9] shadow-lg shadow-[#102a54]/7">
           <InteractiveVisitMap />
         </div>
 
@@ -57,7 +57,7 @@ export function VisitPage() {
 
         <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-12 sm:flex-row sm:flex-wrap">
           <a href={business.directionsUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#df336d] px-8 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]"><Navigation size={17} aria-hidden="true" />Get Directions</a>
-          <a href={business.orderInfoPath} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/15 bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#102a54] transition hover:border-[#df336d]/40"><ShoppingBag size={16} aria-hidden="true" />Order Online</a>
+          <a href={business.orderInfoPath} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-[#102a54]/15 bg-white px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-[#102a54] transition hover:border-[#df336d]/40"><ShoppingBag size={16} aria-hidden="true" />Order Online</a>
         </div>
         <nav aria-label="Explore before your visit" className="mt-5 flex items-center justify-center gap-6 text-sm font-extrabold text-[#0873ae]">
           <a href="/menu" className="inline-flex min-h-11 items-center gap-2 underline decoration-[#0873ae]/30 underline-offset-4 hover:text-[#df336d]"><Utensils size={16} aria-hidden="true" />Menu</a>

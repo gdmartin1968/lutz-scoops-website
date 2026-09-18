@@ -8,14 +8,14 @@ import { business } from "../config/business";
 
 export function VisitSection() {
   return (
-    <section id="visit" className="bg-[#fffaf6] py-18 sm:py-20">
+    <section id="visit" className="bg-[#fffaf6] py-12 sm:py-14">
       <div className="mx-auto grid max-w-[1440px] gap-8 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-12">
-        <div className="rounded-[1.75rem] bg-white p-8 shadow-xl shadow-[#102a54]/6 sm:p-11">
+        <div className="rounded-2xl bg-white p-7 shadow-lg shadow-[#102a54]/6 sm:p-9">
           <p className="text-sm font-black uppercase tracking-[0.26em] text-[#df336d]">
             Come say hello
           </p>
 
-          <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-5xl">
+          <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-[#102a54] sm:text-4xl">
             Your neighborhood happy place.
           </h2>
 
@@ -57,8 +57,6 @@ export function VisitSection() {
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a
               href={business.directionsUrl}
-              target="_blank"
-              rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0873ae] px-6 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-[#086596]"
             >
               <Navigation size={18} />
@@ -76,7 +74,7 @@ export function VisitSection() {
           </div>
         </div>
 
-        <div className="rounded-[1.75rem] bg-[#df336d] p-8 text-white shadow-xl shadow-[#df336d]/18 sm:p-11">
+        <div className="rounded-2xl bg-[#df336d] p-7 text-white shadow-lg shadow-[#df336d]/18 sm:p-9">
           <Clock3 size={38} />
 
           <p className="mt-8 text-sm font-black uppercase tracking-[0.26em] text-white/65">

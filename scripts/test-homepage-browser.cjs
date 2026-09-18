@@ -1,90 +1,91 @@
-const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const os = require("node:os");
-const path = require("node:path");
-const { pathToFileURL } = require("node:url");
-const keepAlive = setInterval(() => {}, 1_000);
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 
 (async () => {
-  const root = path.resolve(__dirname, "..");
-  const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-  const output = process.env.HOMEPAGE_QA_OUTPUT || path.join(os.tmpdir(), "lutz-homepage-collage-qa");
+  const root = path.resolve(__dirname, '..');
+  const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+  const { resolveHighlightPrice } = await import(pathToFileURL(path.join(root, 'src/lib/public-menu.ts')).href);
+  const { preview } = await import(pathToFileURL(path.join(root, 'node_modules/vite/dist/node/index.js')).href);
+  const server = process.env.HOMEPAGE_QA_URL ? null : await preview({ root, preview: { host: '127.0.0.1', port: 4179, strictPort: true } });
+  const base = process.env.HOMEPAGE_QA_URL || 'http://127.0.0.1:4179';
+  const output = process.env.HOMEPAGE_QA_OUTPUT || path.join(os.tmpdir(), 'lutz-homepage-revision-qa');
   fs.mkdirSync(output, { recursive: true });
-  const { preview } = await import(pathToFileURL(path.join(root, "node_modules/vite/dist/node/index.js")).href);
-  const server = await preview({ root, preview: { host: "127.0.0.1", port: 4179, strictPort: true } });
-  const browser = await chromium.launch({ headless: true, channel: "chrome" });
+  const browser = await chromium.launch({ headless: true, channel: 'chrome' });
+  const api = 'https://os.lutzscoops.us/api/public/menu';
+  const keys = ['iceCream', 'milkshakes', 'sundaes', 'coffee', 'acaiBowls', 'floatsAndMore'];
+  const names = ['Premium Ice Cream', 'Milkshakes', 'Sundaes', 'Coffee & Espresso', 'Açaí Bowls', 'Floats & More'];
   try {
-    for (const width of [375, 430, 768, 1440]) {
-      const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+    for (const width of [375, 430, 768, 1024, 1280, 1440, 1920]) {
+      const page = await browser.newPage({ viewport: { width, height: 1000 }, reducedMotion: 'reduce' });
       const errors = [];
-      page.on("console", message => { if (message.type() === "error" && !message.text().includes("Failed to load resource")) errors.push(message.text()); });
-      page.on("pageerror", error => errors.push(error.message));
-      page.on("response", response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
-      await page.goto("http://127.0.0.1:4179/");
-      await page.getByRole("heading", { level: 1, name: /Premium ice cream/i }).waitFor();
-      const collage = page.getByLabel("Lutz Scoops treats and community");
-      const baseImage = page.getByRole("img", { name: "Lutz Scoops ice cream, coffee, desserts, families and friends" });
-      assert.match(await baseImage.getAttribute("src"), /homepage-lifestyle-collage-v2\.png/);
-      assert.ok(await baseImage.evaluate(element => element.complete && element.naturalWidth > 0));
-      if (width >= 1024) {
-        await collage.waitFor();
-        const expected = [
-          ["Five branded Lutz Scoops cups with five different visible ice cream flavors", "five-flavor-cups.png"],
-          ["A boy drinking a whipped cream and chocolate drizzle milkshake", "milkshake.png"],
-          ["Coffee pouring into a branded Lutz Scoops mug", "coffee.png"],
-          ["Two friends enjoying Lutz Scoops drinks", "friends.png"],
-          ["Lutz Scoops wall sign", "lutz-scoops-sign.png"],
-          ["Good ice cream, good coffee, good vibes neon sign", "good-vibes-neon.png"],
-        ];
-        const family = collage.locator("[data-family-slide]");
-        await family.waitFor();
-        assert.match(await family.getAttribute("src"), /family-01\.png/);
-        assert.equal(await family.getAttribute("alt"), "");
-        for (const [alt, filename] of expected) {
-          const image = collage.getByRole("img", { name: alt });
-          await image.waitFor();
-          assert.match(await image.getAttribute("src"), new RegExp(filename.replace(".", "\\.")));
-          assert.ok(await image.evaluate(element => element.complete && element.naturalWidth > 0));
-        }
-      } else {
-        assert.equal(await collage.isVisible(), false);
+      page.on('pageerror', error => errors.push(error.message));
+      page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+      page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
+      const feedPromise = page.waitForResponse(api);
+      const flavorsPromise = page.waitForResponse('https://os.lutzscoops.us/api/public/flavors');
+      await page.goto(base, { waitUntil: 'networkidle' });
+      const feedResponse = await feedPromise;
+      assert.equal(feedResponse.status(), 200);
+      const feed = await feedResponse.json();
+      const flavors = await flavorsPromise;
+      assert.equal(flavors.status(), 200);
+      await page.getByRole('heading', { level: 1, name: /Premium ice cream/i }).waitFor();
+      const hero = page.locator('#top img');
+      assert.ok(await hero.evaluate(e => e.complete && e.naturalWidth > 0));
+      assert.equal(await hero.evaluate(e => getComputedStyle(e).objectFit), 'contain', 'entire baked-in flavor label and cup must remain visible');
+      const bounds = await hero.boundingBox();
+      assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= width);
+      const parent = await hero.locator('..').boundingBox();
+      assert.ok(bounds.y >= parent.y + 15 && bounds.y + bounds.height <= parent.y + parent.height - 15, 'hero has vertical breathing room');
+      await page.locator('#top').screenshot({ path: path.join(output, `hero-${width}.png`) });
+      const menu = page.locator('#menu');
+      await menu.scrollIntoViewIfNeeded();
+      const cards = menu.locator('a');
+      assert.deepEqual(await cards.locator('h3').allTextContents(), names);
+      for (const img of await cards.locator('img').all()) {
+        await img.scrollIntoViewIfNeeded();
+        await img.evaluate(e => e.decode());
       }
+      assert.equal(await cards.locator('img').count(), 6);
+      const brownieImage = cards.nth(2).locator('img');
+      assert.match(await brownieImage.getAttribute('src'), /brownie-sundae-v2.webp$/);
+      assert.match(await brownieImage.getAttribute('alt'), /Three-scoop Brownie Sundae with three cherries/);
+      assert.deepEqual(await brownieImage.evaluate(e => [e.naturalWidth, e.naturalHeight, getComputedStyle(e).objectFit]), [800, 600, 'contain']);
+      const expected = keys.map(key => resolveHighlightPrice(feed.items, key));
+      assert.deepEqual(await cards.evaluateAll(es => es.map(e => e.querySelector('[data-category-price]')?.getAttribute('data-category-price') || null)), expected);
+      const brownie = feed.items.find(item => item.name === 'Brownie Sundae');
+      if (brownie) {
+        const { getStartingPrice, formatMenuPrice } = await import(pathToFileURL(path.join(root, 'src/lib/public-menu.ts')).href);
+        assert.equal(await cards.nth(2).locator('[data-pictured-price]').innerText(), formatMenuPrice(String(getStartingPrice(brownie))));
+        assert.equal(await cards.nth(2).locator('[data-pictured-price]').innerText(), '$10.50');
+        assert.match(await cards.nth(2).innerText(), /Pictured: Brownie Sundae/);
+        assert.match(await cards.nth(2).innerText(), /Sundaes from \$/i);
+      }
+      const rects = await cards.evaluateAll(es => es.map(e => ({ x: e.offsetLeft, y: e.offsetTop })));
+      if (width >= 1024) { assert.equal(new Set(rects.map(r => r.x)).size, 3); assert.equal(new Set(rects.map(r => r.y)).size, 2); }
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      assert.equal(await cards.evaluateAll(es => es.some(e => e.scrollWidth > e.clientWidth + 1)), false);
       assert.deepEqual(errors, []);
-      await page.screenshot({ path: path.join(output, `homepage-${width}.png`), fullPage: false });
+      await menu.screenshot({ style: '#root > div > header { visibility: hidden; }', path: path.join(output, `menu-${width}.png`) });
+      console.log(JSON.stringify({ width, menuItems: feed.count, flavors: (await flavors.json()).count, prices: expected, result: 'PASS' }));
       await page.close();
     }
-    const rotationPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-    await rotationPage.goto("http://127.0.0.1:4179/");
-    const familyPanel = rotationPage.locator("[data-family-panel]");
-    assert.ok(await familyPanel.boundingBox());
-    await familyPanel.screenshot({ path: path.join(output, "family-01.png") });
-    const changeTimes = [];
-    for (const slide of [2, 3, 4, 5]) {
-      await rotationPage.locator(`[data-family-slide="${slide}"]`).waitFor({ state: "attached", timeout: 10_000 });
-      changeTimes.push(Date.now());
-      await rotationPage.waitForTimeout(700);
-      assert.equal(await rotationPage.locator("[data-family-slide]").count(), 1, "crossfade settles to one slide");
-      await rotationPage.getByRole("button", { name: "Show homepage image 1" }).click();
-      await familyPanel.waitFor({ state: "visible" });
-      await familyPanel.screenshot({ path: path.join(output, `family-0${slide}.png`) });
+    // API failure must not substitute fabricated prices, while images remain useful.
+    for (const status of [200, 503]) {
+      const page = await browser.newPage();
+      await page.route(api, route => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify({ generatedAt: new Date().toISOString(), count: 0, items: [] }) }));
+      await page.goto(base, { waitUntil: 'networkidle' });
+      assert.doesNotMatch(await page.locator('#menu').innerText(), /\$\d/);
+      assert.equal(await page.locator('[data-pictured-price]').count(), 0);
+      assert.equal(await page.locator('#menu img').count(), 6);
+      await page.close();
     }
-    for (let index = 1; index < changeTimes.length; index++) {
-      const interval = changeTimes[index] - changeTimes[index - 1];
-      assert.ok(interval >= 7_200 && interval <= 8_800, `family cadence ${interval}ms`);
-    }
-    await rotationPage.close();
-
-    const reducedPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
-    await reducedPage.goto("http://127.0.0.1:4179/");
-    assert.match(await reducedPage.locator("[data-family-slide]").getAttribute("src"), /family-01\.png/);
-    await reducedPage.waitForTimeout(8_300);
-    assert.match(await reducedPage.locator("[data-family-slide]").getAttribute("src"), /family-01\.png/);
-    await reducedPage.close();
-
-    console.log(`Focused homepage collage QA passed; screenshots: ${output}`);
+    console.log(`Homepage visual revision QA passed. Screenshots: ${output}`);
   } finally {
     await browser.close();
-    await new Promise(resolve => server.httpServer.close(resolve));
+    if (server) await new Promise(resolve => server.httpServer.close(resolve));
   }
-})().then(() => clearInterval(keepAlive), error => { clearInterval(keepAlive); console.error(error); process.exitCode = 1; });
+})().catch(error => { console.error(error); process.exitCode = 1; });

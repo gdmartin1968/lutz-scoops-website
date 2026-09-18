@@ -1,26 +1,23 @@
-import { Heart } from "lucide-react";
+import { CommunityPhotos } from "../components/CommunityPhotos";
 
 export function AboutSection() {
   return (
-    <section id="about" className="bg-white py-18 sm:py-20">
-      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[#fff0f5] text-[#df336d]">
-          <Heart size={27} fill="currentColor" />
-        </div>
-
-        <p className="mt-7 text-sm font-black uppercase tracking-[0.26em] text-[#0873ae]">
+    <section id="about" className="bg-white py-12 sm:py-14">
+      <div className="mx-auto grid max-w-[1180px] items-center gap-8 px-5 sm:px-8 lg:grid-cols-2 lg:px-10">
+        <CommunityPhotos className="aspect-[4/3] w-full rounded-2xl" />
+        <div><p className="text-xs font-black uppercase tracking-[0.24em] text-[#0873ae]">
           About Lutz Scoops
         </p>
 
-        <h2 className="mt-4 text-4xl font-black tracking-[-0.045em] text-[#102a54] sm:text-5xl">
+        <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-[#102a54] sm:text-4xl">
           Locally operated. Community focused.
         </h2>
 
-        <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-[#102a54]/64">
+        <p className="mt-5 max-w-xl leading-7 text-[#102a54]/64">
           Lutz Scoops is locally operated by Northstar Hospitality Group LLC,
           with a focus on friendly service, a welcoming experience and serving
           the Lutz community well.
-        </p>
+        </p><a href="/about" className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#df336d] px-6 text-sm font-black uppercase text-white">Our Story</a></div>
       </div>
     </section>
   );

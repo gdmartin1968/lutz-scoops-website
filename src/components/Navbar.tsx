@@ -23,8 +23,8 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#102a54]/8 bg-white/95 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-[72px] max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-12">
+    <header className="sticky top-0 z-50 border-b border-[#102a54]/8 bg-[#fffdf9]/96 backdrop-blur-xl">
+      <div className="mx-auto flex min-h-[68px] max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
         <a
           href="/#top"
           aria-label="Lutz Scoops home"
@@ -36,13 +36,13 @@ export function Navbar() {
 
         <nav
           aria-label="Primary navigation"
-          className="hidden items-center gap-8 lg:flex"
+          className="hidden items-center gap-7 lg:flex"
         >
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="relative py-3 text-sm font-extrabold text-[#102a54]/72 transition hover:text-[#df336d]"
+              className="relative py-3 text-xs font-black uppercase tracking-[0.08em] text-[#102a54]/78 transition hover:text-[#df336d]"
             >
               {link.label}
             </a>
@@ -52,8 +52,6 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <a
             href={business.orderInfoPath}
-            target="_blank"
-            rel="noreferrer"
             className="hidden items-center gap-2 rounded-full bg-[#df336d] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960] sm:inline-flex"
           >
             <ShoppingBag size={17} />
@@ -93,8 +91,6 @@ export function Navbar() {
 
             <a
               href={business.orderInfoPath}
-              target="_blank"
-              rel="noreferrer"
               onClick={closeMenu}
               className="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-6 py-4 text-center font-black text-white shadow-lg shadow-[#df336d]/20"
             >

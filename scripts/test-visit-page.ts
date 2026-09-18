@@ -10,7 +10,7 @@ assert.deepEqual(business.hours, [
   { days: "Friday – Saturday", time: "12 PM – 10 PM" },
   { days: "Sunday", time: "12 PM – 8 PM" },
 ]);
-assert.equal(business.orderInfoPath, "/order.html");
+assert.equal(business.orderInfoPath, "/order-online");
 assert.equal(business.squareOrderingUrl, "https://lutzscoops.square.site/");
 assert.match(business.directionsUrl, /19259\+North\+Dale\+Mabry\+Highway/);
 

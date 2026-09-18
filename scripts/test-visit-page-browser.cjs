@@ -24,7 +24,7 @@ const keepAlive = setInterval(() => {}, 1_000);
       assert.ok(await page.locator(".leaflet-popup-content").getByText("Lutz Scoops", { exact: true }).isVisible());
       assert.match(await page.locator(".leaflet-control-attribution").innerText(), /OpenStreetMap/);
       await page.locator(".leaflet-control-zoom-in").click();
-      assert.equal(await page.getByRole("link", { name: "727-504-4722" }).getAttribute("href"), "tel:+17275044722");
+      assert.equal(await page.getByRole("main").getByRole("link", { name: "727-504-4722" }).getAttribute("href"), "tel:+17275044722");
       for (const link of await page.getByRole("link", { name: "Get Directions" }).all()) {
         assert.match(await link.getAttribute("href"), /19259\+North\+Dale\+Mabry\+Highway/);
       }

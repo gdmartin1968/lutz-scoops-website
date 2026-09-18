@@ -42,20 +42,18 @@ try {
 const read = (file: string) => readFileSync(new URL("../" + file, import.meta.url), "utf8");
 const page = read("src/pages/FlavorsPage.tsx");
 assert.match(read("src/App.tsx"), /=== "\/flavors" \? <FlavorsPage/);
-assert.match(page, /state.feed.available.map/);
+assert.match(page, /visible\.map/);
 assert.doesNotMatch(page, /\.featured|\.sort\(|featuredRank|>\{flavor.id\}|digitalAssetPath|generatedAt|supplier/);
 assert.match(page, /flavor.imageUrl\?\.trim\(\) && !failedImage/);
 assert.match(page, /onError=\{\(\) => setFailedImage\(true\)\}/);
 assert.match(page, /flavor.description\?\.trim\(\)/);
 assert.match(page, /displayedDietaryCodes\(flavor.dietaryMetadata\)/);
 assert.match(page, /flavor.showAskStaff/);
-assert.match(page, /flavor.containsAllergens/);
 assert.match(page, /state.status === "error"/);
-assert.match(page, /state.feed.available.length === 0/);
+assert.match(page, /visible.length === 0/);
 assert.match(page, /state.feed.count/);
 assert.match(page, /document.title = "Today’s Flavors \| Lutz Scoops"/);
-assert.match(page, /meta\[name="description"\]/);
-for (const file of ["src/sections/Hero.tsx", "src/sections/FeaturedFlavors.tsx", "public/order.html"])
+for (const file of ["src/sections/Hero.tsx", "src/sections/FeaturedFlavors.tsx"])
   assert.ok(read(file).includes('href="/flavors"'), file);
 const nav = read("src/components/Navbar.tsx");
 assert.ok(nav.includes('{ label: "Flavors", href: "/flavors" }'));

@@ -553,6 +553,103 @@
 
               </form>
 
+              <div id="preorderPanel" style="display:none;margin-top:24px;padding-top:24px;border-top:1px solid rgba(20,42,74,.14);">
+                <div class="eyebrow">Get a Head Start</div>
+
+                <h3 style="margin:8px 0 8px;">
+                  Want to start your team order now?
+                </h3>
+
+                <p class="form-note" style="margin-bottom:18px;">
+                  Give us a rough count before you leave the fields. This is a preliminary order so our team can start preparing for your arrival.
+                </p>
+
+                <form id="preorderForm">
+
+                  <div class="field">
+                    <label for="preorderContactName">Your name</label>
+                    <input
+                      id="preorderContactName"
+                      name="contactName"
+                      maxlength="160"
+                      placeholder="Who should we ask for?"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="preorderContactPhone">Mobile number</label>
+                    <input
+                      id="preorderContactPhone"
+                      name="contactPhone"
+                      maxlength="40"
+                      inputmode="tel"
+                      placeholder="Optional"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="preorderCups">Cups</label>
+                    <input
+                      id="preorderCups"
+                      name="cups"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value="0"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="preorderCones">Cones</label>
+                    <input
+                      id="preorderCones"
+                      name="cones"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value="0"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="preorderShakes">Shakes</label>
+                    <input
+                      id="preorderShakes"
+                      name="shakes"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value="0"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="preorderNotes">Flavor requests or notes</label>
+                    <textarea
+                      id="preorderNotes"
+                      name="notes"
+                      rows="4"
+                      maxlength="1000"
+                      placeholder="Example: 4 Cookie Monster, 3 Cookies & Cream, 2 Chocolate"
+                    ></textarea>
+                  </div>
+
+                  <button
+                    id="preorderSubmit"
+                    class="btn btn-primary"
+                    type="submit"
+                    style="width:100%;margin-top:6px;"
+                  >
+                    Send My Team Order Head Start
+                  </button>
+
+                  <p class="form-note" id="preorderStatus">
+                    No payment is collected here. We will use this as a head start for your visit.
+                  </p>
+
+                </form>
+              </div>
+
             </div>
 
           </div>
@@ -712,6 +809,136 @@
 
   </footer>
 
-<script>document.getElementById("arrivalForm").addEventListener("submit",async function(e){e.preventDefault();const form=e.currentTarget;const button=document.getElementById("arrivalSubmit");const status=document.getElementById("arrivalStatus");button.disabled=true;button.textContent="Sending...";status.textContent="Sending your heads-up...";try{const data=Object.fromEntries(new FormData(form).entries());data.groupSize=Number(data.groupSize);const response=await fetch("https://os.lutzscoops.us/api/public/team-arrival",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw new Error(result.message||"Unable to send your heads-up.");status.textContent="Thanks! We have your heads-up and will start getting ready for your group.";form.reset();button.textContent="Heads-Up Sent!";setTimeout(()=>{button.textContent="Send Our Heads-Up";button.disabled=false;},2500);}catch(error){status.textContent=error.message||"Unable to send your heads-up right now. Please try again.";button.textContent="Send Our Heads-Up";button.disabled=false;}});</script>
+<script>
+let currentArrivalAlertId = null;
+
+document.getElementById("arrivalForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const button = document.getElementById("arrivalSubmit");
+  const status = document.getElementById("arrivalStatus");
+  const preorderPanel = document.getElementById("preorderPanel");
+
+  button.disabled = true;
+  button.textContent = "Sending...";
+  status.textContent = "Sending your heads-up...";
+
+  try {
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.groupSize = Number(data.groupSize);
+
+    const response = await fetch("https://os.lutzscoops.us/api/public/team-arrival", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Unable to send your heads-up.");
+    }
+
+    currentArrivalAlertId = result.alertId;
+
+    status.textContent = "Thanks! We have your heads-up and will start getting ready for your group.";
+    button.textContent = "Heads-Up Sent!";
+
+    preorderPanel.style.display = "block";
+    preorderPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    form.reset();
+
+    setTimeout(() => {
+      button.textContent = "Send Our Heads-Up";
+      button.disabled = false;
+    }, 2500);
+  } catch (error) {
+    status.textContent =
+      error.message || "Unable to send your heads-up right now. Please try again.";
+    button.textContent = "Send Our Heads-Up";
+    button.disabled = false;
+  }
+});
+
+document.getElementById("preorderForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const button = document.getElementById("preorderSubmit");
+  const status = document.getElementById("preorderStatus");
+
+  if (!currentArrivalAlertId) {
+    status.textContent = "Please send your team heads-up first.";
+    return;
+  }
+
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  const cups = Number(data.cups || 0);
+  const cones = Number(data.cones || 0);
+  const shakes = Number(data.shakes || 0);
+
+  const items = [];
+
+  if (cups > 0) {
+    items.push({ itemType: "Cup", quantity: cups });
+  }
+
+  if (cones > 0) {
+    items.push({ itemType: "Cone", quantity: cones });
+  }
+
+  if (shakes > 0) {
+    items.push({ itemType: "Shake", quantity: shakes });
+  }
+
+  if (items.length === 0) {
+    status.textContent = "Add at least one cup, cone, or shake so we have something to prepare.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Sending...";
+  status.textContent = "Sending your preliminary team order...";
+
+  try {
+    const response = await fetch("https://os.lutzscoops.us/api/public/team-preorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        arrivalAlertId: currentArrivalAlertId,
+        contactName: String(data.contactName || "").trim(),
+        contactPhone: String(data.contactPhone || "").trim(),
+        notes: String(data.notes || "").trim(),
+        items
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Unable to send your team order.");
+    }
+
+    status.textContent =
+      "Got it! Your team order head start is now attached to your arrival notice.";
+    button.textContent = "Team Order Sent!";
+    button.disabled = true;
+
+    Array.from(form.elements).forEach((element) => {
+      if (element !== button) {
+        element.disabled = true;
+      }
+    });
+  } catch (error) {
+    status.textContent =
+      error.message || "Unable to send your team order right now. Please try again.";
+    button.textContent = "Send My Team Order Head Start";
+    button.disabled = false;
+  }
+});
+</script>
 </body>
 </html>

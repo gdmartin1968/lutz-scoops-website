@@ -1,15 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
-
-const FAMILY_ROTATION_MS = 8000;
-
-const approvedFamilyImages = [
-  { src: "/images/lifestyle/hero-collage/family-01.png", objectPosition: "50% center" },
-  { src: "/images/lifestyle/hero-collage/family-02.png", objectPosition: "38% center" },
-  { src: "/images/lifestyle/hero-collage/family-03.png", objectPosition: "52% center" },
-  { src: "/images/lifestyle/hero-collage/family-04.png", objectPosition: "50% center" },
-  { src: "/images/lifestyle/hero-collage/family-05.png", objectPosition: "44% center" },
-] as const;
+import { CommunityPhotos } from "./CommunityPhotos";
 
 type PanelProps = {
   src: string;
@@ -27,39 +16,13 @@ function Panel({ src, alt, className, fit = "cover" }: PanelProps) {
 }
 
 export function HomepageCollage({ visible }: { visible: boolean }) {
-  const [familyIndex, setFamilyIndex] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (prefersReducedMotion || approvedFamilyImages.length < 2) return;
-    const timer = window.setInterval(() => {
-      setFamilyIndex(current => (current + 1) % approvedFamilyImages.length);
-    }, FAMILY_ROTATION_MS);
-    return () => window.clearInterval(timer);
-  }, [prefersReducedMotion]);
-
-  const family = approvedFamilyImages[familyIndex];
-
   return (
     <div aria-label="Lutz Scoops treats and community" className={`absolute inset-y-0 right-0 z-[2] w-[46%] bg-white ${visible ? "hidden lg:block" : "hidden"}`}>
       <Panel src="/images/lifestyle/hero-collage/five-flavor-cups.png" alt="Five branded Lutz Scoops cups with five different visible ice cream flavors" fit="contain" className="left-0 top-0 h-[21.9%] w-[57.6%]" />
       <Panel src="/images/lifestyle/hero-collage/coffee.png" alt="Coffee pouring into a branded Lutz Scoops mug" className="right-0 top-0 h-[21.9%] w-[41.1%]" />
 
-      <div data-family-panel className="absolute left-0 top-[22.6%] h-[50.8%] w-[57.6%] overflow-hidden bg-[#fffaf5]">
-        <AnimatePresence initial={false}>
-          <motion.img
-            data-family-slide={familyIndex + 1}
-            key={family.src}
-            src={family.src}
-            alt=""
-            initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: prefersReducedMotion ? 1 : 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
-            style={{ objectPosition: family.objectPosition }}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </AnimatePresence>
+      <div className="absolute left-0 top-[22.6%] h-[50.8%] w-[57.6%]">
+        <CommunityPhotos className="h-full w-full" />
       </div>
 
       <Panel src="/images/lifestyle/hero-collage/milkshake.png" alt="A boy drinking a whipped cream and chocolate drizzle milkshake" className="right-0 top-[22.8%] h-[46.6%] w-[41.1%]" />

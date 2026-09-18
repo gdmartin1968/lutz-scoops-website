@@ -40,16 +40,16 @@ export function FeaturedFlavors() {
   }, []);
 
   return (
-    <section id="flavors" className="bg-[#fffaf4] py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
+    <section id="flavors" className="bg-[#fffaf4] py-12 sm:py-14 lg:py-16">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-10">
         <div className="text-center">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d] sm:text-sm">
             Live from today&apos;s scoop case
           </p>
-          <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-[#102a54] sm:text-5xl">
+          <h2 className="mt-2 text-3xl font-black uppercase tracking-[-0.035em] text-[#102a54] sm:text-4xl">
             Featured Flavors
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#102a54]/70 sm:text-lg">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#102a54]/68 sm:text-base">
             {loadState === "loading" && "Checking today’s scoop case…"}
             {loadState === "ready" && flavors.length > 0 &&
               `${availableCount} ${availableCount === 1 ? "flavor is" : "flavors are"} available today. Here are today’s featured scoops.`}
@@ -61,13 +61,13 @@ export function FeaturedFlavors() {
         </div>
 
         {flavors.length > 0 && (
-          <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+          <div className="mx-auto mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
             {flavors.map((flavor) => (
             <article
               key={flavor.id}
-              className="group overflow-hidden rounded-[1.35rem] border border-[#102a54]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#102a54]/10 sm:rounded-[1.6rem]"
+              className="group overflow-hidden rounded-xl border border-[#102a54]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="aspect-[4/5] overflow-hidden bg-white">
+              <div className="aspect-square overflow-hidden bg-white">
                 <img
                   src={flavor.imageUrl}
                   alt={`${flavor.name} ice cream at Lutz Scoops`}
@@ -75,8 +75,8 @@ export function FeaturedFlavors() {
                   loading="lazy"
                 />
               </div>
-              <div className="px-3 py-4 text-center sm:px-5 sm:py-5">
-                <h3 className="text-sm font-black leading-tight text-[#102a54] sm:text-base">
+              <div className="px-2.5 py-3 text-center sm:px-3">
+                <h3 className="text-xs font-black leading-tight text-[#102a54] sm:text-sm">
                   {flavor.name}
                 </h3>
               </div>
@@ -85,7 +85,7 @@ export function FeaturedFlavors() {
           </div>
         )}
 
-        <div className="mt-10 flex justify-center sm:mt-12">
+        <div className="mt-8 flex justify-center">
           <a
             href="/flavors"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#df336d] px-7 py-3.5 text-sm font-black uppercase tracking-[0.04em] text-white shadow-lg shadow-[#df336d]/20 transition hover:-translate-y-0.5 hover:bg-[#c92960]"
