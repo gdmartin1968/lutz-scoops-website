@@ -17,7 +17,7 @@ export function Hero() {
           </div>
         </motion.div>
         <div className="relative flex items-center justify-center bg-[#f4ece3] p-5 sm:p-8 lg:p-6">
-          <img src="/images/flavors/mango-sorbet.png" alt="Mango Sorbet ice cream served in a Lutz Scoops cup" className="block aspect-square w-full max-w-[580px] object-contain" fetchPriority="high" />
+          <img src="/images/flavors/cookie-monster-master.png" alt="Cookie Monster ice cream served in a Lutz Scoops cup" className="block aspect-square w-full max-w-[580px] object-contain" fetchPriority="high" />
           <div className="absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-[#fff8ef] to-transparent lg:block" />
         </div>
       </div>

@@ -68,7 +68,8 @@ assert.doesNotMatch(
 );
 
 const hero = readFileSync(new URL("../src/sections/Hero.tsx", import.meta.url), "utf8");
-assert.match(hero, /mango-sorbet\.png/);
+assert.match(hero, /cookie-monster-master\.png/);
+assert.doesNotMatch(hero, /mango-sorbet\.png/);
 assert.match(hero, /Premium ice cream/);
 assert.match(hero, /business\.orderInfoPath/);
 assert.match(hero, /useReducedMotion/);
