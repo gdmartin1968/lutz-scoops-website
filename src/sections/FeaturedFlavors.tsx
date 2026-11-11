@@ -21,6 +21,7 @@ export function FeaturedFlavors() {
       try {
         const data = await loadPublicFlavorFeed(controller.signal);
 
+        if (controller.signal.aborted) return;
         setAvailableCount(data.count);
         setFlavors(
           data.featured.filter(
@@ -31,12 +32,13 @@ export function FeaturedFlavors() {
         setLoadState("ready");
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        setLoadState("error");
+        setLoadState(current => current === "ready" ? current : "error");
       }
     }
 
     void loadFlavors();
-    return () => controller.abort();
+    const timer = window.setInterval(() => void loadFlavors(), 5000);
+    return () => { controller.abort(); window.clearInterval(timer); };
   }, []);
 
   return (
@@ -65,7 +67,7 @@ export function FeaturedFlavors() {
             {flavors.map((flavor) => (
             <article
               key={flavor.id}
-              className="group overflow-hidden rounded-xl border border-[#102a54]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className={`${flavor.almostOut ? "almost-out-card" : ""} group overflow-hidden rounded-xl border border-[#102a54]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg`}
             >
               <div className="aspect-square overflow-hidden bg-white">
                 <img
@@ -76,6 +78,7 @@ export function FeaturedFlavors() {
                 />
               </div>
               <div className="px-2.5 py-3 text-center sm:px-3">
+                {flavor.almostOut && <p className="mb-1 inline-block rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</p>}
                 <h3 className="text-xs font-black leading-tight text-[#102a54] sm:text-sm">
                   {flavor.name}
                 </h3>

@@ -117,3 +117,13 @@ img {
   border-radius: 50%;
   background: white;
 }
+
+/* 0-5 seconds: five gentle pulses. 5-30 seconds: normal. No geometry changes. */
+@keyframes almost-out-warning {
+  0%, 3.333%, 6.667%, 10%, 13.333%, 16.667%, 100% { box-shadow: inset 0 0 0 0 transparent; }
+  1.667%, 5%, 8.333%, 11.667%, 15% { box-shadow: inset 0 0 0 4px #fbbf24, 0 0 12px #fbbf2480; }
+}
+.almost-out-card { animation: almost-out-warning 30s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .almost-out-card { animation: none; outline: 2px solid #f59e0b; outline-offset: -2px; }
+}
