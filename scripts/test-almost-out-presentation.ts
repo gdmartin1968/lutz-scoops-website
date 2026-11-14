@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {almostOutWarningAt,startAlmostOutPresentation,ALMOST_OUT_CYCLE_MS,ALMOST_OUT_WARNING_MS} from '../src/lib/almost-out-presentation.ts';
+assert.equal(ALMOST_OUT_CYCLE_MS,30000);assert.equal(ALMOST_OUT_WARNING_MS,5000);
+for(const t of [0,1,4999,4999.999,30000,34999])assert.equal(almostOutWarningAt(t),true);
+for(const t of [5000,10000,29999,29999.999,35000])assert.equal(almostOutWarningAt(t),false);
+let now=0,callback=()=>{},delay=0,updates=0,cancels=0,value='';
+const cleanup=startAlmostOutPresentation({setAttribute:(key,v)=>{assert.equal(key,'data-almost-out-warning');updates++;value=v;},removeAttribute:()=>{value='';}}, {now:()=>now,schedule:(cb,ms)=>{callback=cb;delay=ms;return 1;},cancel:()=>{cancels++;}});
+assert.equal(value,'true');assert.equal(delay,5000);now=5000;callback();assert.equal(value,'false');assert.equal(delay,25000);now=30000;callback();assert.equal(value,'true');assert.equal(delay,5000);assert.equal(updates,3,'Only boundary updates; no per-card or per-frame work');
+now=62000;callback();assert.equal(value,'true');assert.equal(delay,3000,'Delayed timer recovers actual shared wall-clock phase');cleanup();assert.equal(value,'');assert.equal(cancels,1);callback();assert.equal(value,'','Cleanup prevents pending callbacks');
+console.log('Almost Out exact boundaries, 30s repeat, 5s/25s scheduling, delayed clock recovery and cleanup passed; presentation attribute only.');

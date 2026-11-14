@@ -1,3 +1,4 @@
+import {useAlmostOutPresentation} from '../lib/use-almost-out-presentation';
 import { IceCreamBowl, MapPin, ShoppingBag } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { displayedDietaryCodes, loadPublicFlavorFeed, type DietaryCode, type PublicFlavor, type PublicFlavorFeed } from "../lib/public-flavors";
@@ -15,7 +16,7 @@ function FlavorCard({ flavor }: { flavor: PublicFlavor }) {
       {flavor.imageUrl?.trim() && !failedImage ? <img src={flavor.imageUrl} alt={`${flavor.name} ice cream`} loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]" onError={() => setFailedImage(true)} /> : <div className="flex h-full flex-col items-center justify-center gap-2 text-[#df336d]" aria-label="Flavor photo coming soon"><IceCreamBowl size={40} strokeWidth={1.25} /><span className="text-xs font-bold">Photo coming soon</span></div>}
     </div>
     <div className="p-3 text-center sm:p-3.5">
-      {flavor.almostOut && <p className="mb-2 inline-block rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</p>}
+      {flavor.almostOut && <span className="almost-out-indicator absolute left-2 top-2 z-10 rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</span>}
       <h2 className="break-words text-sm font-black leading-tight text-[#102a54] sm:text-base">{flavor.name}</h2>
       {badges.length > 0 && <ul aria-label="Dietary information" className="mt-2 flex flex-wrap justify-center gap-1">{badges.map(code => <li key={code} className="rounded-full bg-[#eaf6fb] px-2 py-0.5 text-[10px] font-black text-[#0873ae]">{code}</li>)}</ul>}
       {flavor.description?.trim() && <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#102a54]/65">{flavor.description}</p>}
@@ -25,6 +26,7 @@ function FlavorCard({ flavor }: { flavor: PublicFlavor }) {
 }
 
 export function FlavorsPage() {
+  useAlmostOutPresentation();
   const [state, setState] = useState<AvailabilityState>({ status: "loading" });
   const [filter, setFilter] = useState<Filter>("ALL");
   useEffect(() => { const controller = new AbortController(); const refresh = () => loadPublicFlavorFeed(controller.signal).then(feed => { if (!controller.signal.aborted) setState({ status: "ready", feed }); }, () => { if (!controller.signal.aborted) setState(current => current.status === "ready" ? current : { status: "error" }); }); void refresh(); const timer = window.setInterval(() => void refresh(), 5000); return () => { controller.abort(); window.clearInterval(timer); }; }, []);

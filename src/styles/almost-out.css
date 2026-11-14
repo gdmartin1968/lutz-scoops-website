@@ -1,0 +1,20 @@
+/* Shared TV/website presentation contract. Timing lives in almost-out-presentation.ts. */
+.almost-out-card { position: relative; }
+.almost-out-card::after { content: none; }
+.almost-out-indicator { display: none; }
+[data-almost-out-warning="true"] .almost-out-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  border: 3px solid #fbbf24;
+  border-radius: inherit;
+  animation: almost-out-pulse 1000ms ease-in-out infinite;
+}
+[data-almost-out-warning="true"] .almost-out-indicator { display: inline-block; }
+@keyframes almost-out-pulse { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.85; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-almost-out-warning] .almost-out-card::after { content: none; animation: none; }
+  .almost-out-indicator { display: inline-block; }
+}

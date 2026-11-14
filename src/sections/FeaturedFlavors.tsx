@@ -1,3 +1,4 @@
+import {useAlmostOutPresentation} from '../lib/use-almost-out-presentation';
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -10,6 +11,7 @@ type LoadState = "loading" | "ready" | "error";
 type FeaturedFlavor = PublicFlavor & { imageUrl: string };
 
 export function FeaturedFlavors() {
+  useAlmostOutPresentation();
   const [flavors, setFlavors] = useState<FeaturedFlavor[]>([]);
   const [availableCount, setAvailableCount] = useState(0);
   const [loadState, setLoadState] = useState<LoadState>("loading");
@@ -78,7 +80,7 @@ export function FeaturedFlavors() {
                 />
               </div>
               <div className="px-2.5 py-3 text-center sm:px-3">
-                {flavor.almostOut && <p className="mb-1 inline-block rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</p>}
+                {flavor.almostOut && <span className="almost-out-indicator absolute left-2 top-2 z-10 rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</span>}
                 <h3 className="text-xs font-black leading-tight text-[#102a54] sm:text-sm">
                   {flavor.name}
                 </h3>
