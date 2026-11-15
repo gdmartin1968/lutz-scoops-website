@@ -12,6 +12,7 @@
     "test:homepage-browser": "node scripts/test-homepage-browser.cjs",
     "preview": "vite preview",
     "test:almost-out-browser": "node scripts/test-almost-out-browser.cjs",
+    "test:dietary-badges-browser": "node scripts/test-dietary-badges-browser.cjs",
     "test:flavors": "node --experimental-strip-types scripts/test-flavors.ts",
     "test:public-menu": "node --experimental-strip-types scripts/test-public-menu.ts",
     "test:menu-page": "node --experimental-strip-types scripts/test-menu-page.ts",

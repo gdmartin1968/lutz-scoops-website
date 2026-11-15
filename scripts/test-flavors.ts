@@ -1,6 +1,9 @@
+import { DIETARY_LABELS } from '../src/lib/dietary-labels.ts';
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { displayedDietaryCodes, loadPublicFlavorFeed, parsePublicFlavorFeed } from "../src/lib/public-flavors.ts";
+
+assert.deepEqual(DIETARY_LABELS,{GF:'Gluten Free',DF:'Dairy Free',SF:'Soy Free',NF:'Nut Free',CF:'Corn Free',EF:'Egg Free',V:'Vegan'});
 
 const first = { id: 1234567, name: "Available first", slug: null, description: null, imageUrl: null, featuredRank: null,
   dietaryMetadata: { GF: { value: "yes", reviewed: true }, DF: { value: "no", reviewed: true }, V: { value: "unknown", reviewed: false } },

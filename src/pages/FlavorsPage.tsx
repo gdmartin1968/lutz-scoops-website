@@ -3,6 +3,8 @@ import { IceCreamBowl, MapPin, ShoppingBag } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { displayedDietaryCodes, loadPublicFlavorFeed, type DietaryCode, type PublicFlavor, type PublicFlavorFeed } from "../lib/public-flavors";
 import { business } from "../config/business";
+import { DietaryBadge } from '../components/DietaryBadge';
+import { DietaryLegend } from '../components/DietaryLegend';
 
 type AvailabilityState = { status: "loading" } | { status: "ready"; feed: PublicFlavorFeed } | { status: "error" };
 type Filter = "ALL" | Extract<DietaryCode, "GF" | "DF" | "V">;
@@ -18,7 +20,7 @@ function FlavorCard({ flavor }: { flavor: PublicFlavor }) {
     <div className="p-3 text-center sm:p-3.5">
       {flavor.almostOut && <span className="almost-out-indicator absolute left-2 top-2 z-10 rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</span>}
       <h2 className="break-words text-sm font-black leading-tight text-[#102a54] sm:text-base">{flavor.name}</h2>
-      {badges.length > 0 && <ul aria-label="Dietary information" className="mt-2 flex flex-wrap justify-center gap-1">{badges.map(code => <li key={code} className="rounded-full bg-[#eaf6fb] px-2 py-0.5 text-[10px] font-black text-[#0873ae]">{code}</li>)}</ul>}
+      {badges.length > 0 && <ul aria-label="Dietary information" className="mt-2 flex flex-wrap justify-center gap-1">{badges.map(code => <li key={code} className="flex"><DietaryBadge code={code} /></li>)}</ul>}
       {flavor.description?.trim() && <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#102a54]/65">{flavor.description}</p>}
       {flavor.showAskStaff && <p className="mt-2 text-[11px] font-bold text-[#102a54]/65">Ask staff for dietary details.</p>}
     </div>
@@ -40,6 +42,7 @@ export function FlavorsPage() {
         <h1 className="mt-2 text-4xl font-black uppercase tracking-[-0.04em] text-[#102a54] sm:text-5xl">Today’s Flavors</h1>
         <p role="status" className="mt-3 text-sm font-bold text-[#102a54]/68">{state.status === "loading" && "Checking today’s scoop case…"}{state.status === "ready" && `${state.feed.count} ${state.feed.count === 1 ? "flavor" : "flavors"} available now`}{state.status === "error" && "Current availability is temporarily unavailable"}</p>
       </header>
+      <DietaryLegend />
       {state.status === "ready" && <div className="mt-6 flex flex-wrap justify-center gap-2" aria-label="Filter flavors">{filters.map(item => <button key={item.value} type="button" aria-pressed={filter === item.value} onClick={() => setFilter(item.value)} className={`min-h-10 rounded-full border px-4 py-2 text-xs font-black uppercase tracking-[0.05em] transition ${filter === item.value ? "border-[#df336d] bg-[#df336d] text-white" : "border-[#102a54]/15 bg-white text-[#102a54] hover:border-[#0873ae]"}`}>{item.label}</button>)}</div>}
       {state.status === "ready" && visible.length > 0 && <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">{visible.map(flavor => <FlavorCard key={flavor.id} flavor={flavor} />)}</div>}
       {state.status === "ready" && visible.length === 0 && <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-[#102a54]/10 bg-white p-8 text-center"><IceCreamBowl className="mx-auto text-[#df336d]" size={38} /><h2 className="mt-3 text-xl font-black">No matching flavors right now</h2><p className="mt-2 text-sm text-[#102a54]/68">Try another filter or check back as the scoop case changes.</p></div>}
