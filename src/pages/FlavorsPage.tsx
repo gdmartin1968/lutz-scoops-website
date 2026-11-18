@@ -19,6 +19,7 @@ function FlavorCard({ flavor }: { flavor: PublicFlavor }) {
     </div>
     <div className="p-3 text-center sm:p-3.5">
       {flavor.almostOut && <span className="almost-out-indicator absolute left-2 top-2 z-10 rounded-full bg-amber-100 px-2 py-1 text-[10px] font-black text-amber-950">ALMOST OUT</span>}
+      {flavor.pintOnly && <span className="mb-2 inline-block rounded-full border border-[#df336d]/30 bg-[#fff0f5] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#ae1f52]">Pint only</span>}
       <h2 className="break-words text-sm font-black leading-tight text-[#102a54] sm:text-base">{flavor.name}</h2>
       {badges.length > 0 && <ul aria-label="Dietary information" className="mt-2 flex flex-wrap justify-center gap-1">{badges.map(code => <li key={code} className="flex"><DietaryBadge code={code} /></li>)}</ul>}
       {flavor.description?.trim() && <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#102a54]/65">{flavor.description}</p>}
@@ -38,10 +39,11 @@ export function FlavorsPage() {
   return <div className="bg-[#fffaf4] px-5 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-14">
     <div className="mx-auto max-w-[1280px]">
       <header className="text-center">
-        <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d]">Live from our scoop case</p>
+        <p className="text-xs font-black uppercase tracking-[0.24em] text-[#df336d]">Available in-store · scoops and pints</p>
         <h1 className="mt-2 text-4xl font-black uppercase tracking-[-0.04em] text-[#102a54] sm:text-5xl">Today’s Flavors</h1>
-        <p role="status" className="mt-3 text-sm font-bold text-[#102a54]/68">{state.status === "loading" && "Checking today’s scoop case…"}{state.status === "ready" && `${state.feed.count} ${state.feed.count === 1 ? "flavor" : "flavors"} available now`}{state.status === "error" && "Current availability is temporarily unavailable"}</p>
+        <p role="status" className="mt-3 text-sm font-bold text-[#102a54]/68">{state.status === "loading" && "Checking today's in-store flavors…"}{state.status === "ready" && `${state.feed.count} ${state.feed.count === 1 ? "flavor" : "flavors"} available now`}{state.status === "error" && "Current availability is temporarily unavailable"}</p>
       </header>
+      {state.status === "ready" && state.feed.available.some(flavor => flavor.pintOnly) && <p className="mt-3 text-center text-xs font-medium text-[#102a54]/75">Flavors marked Pint only are stocked as pints, not in the serving case.</p>}
       <DietaryLegend />
       {state.status === "ready" && <div className="mt-6 flex flex-wrap justify-center gap-2" aria-label="Filter flavors">{filters.map(item => <button key={item.value} type="button" aria-pressed={filter === item.value} onClick={() => setFilter(item.value)} className={`min-h-10 rounded-full border px-4 py-2 text-xs font-black uppercase tracking-[0.05em] transition ${filter === item.value ? "border-[#df336d] bg-[#df336d] text-white" : "border-[#102a54]/15 bg-white text-[#102a54] hover:border-[#0873ae]"}`}>{item.label}</button>)}</div>}
       {state.status === "ready" && visible.length > 0 && <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">{visible.map(flavor => <FlavorCard key={flavor.id} flavor={flavor} />)}</div>}
