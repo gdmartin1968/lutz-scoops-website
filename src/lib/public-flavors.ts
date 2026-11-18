@@ -11,6 +11,7 @@ export type PublicFlavor = {
   dietaryMetadata?: DietaryMetadata | null;
   showAskStaff?: boolean;
   almostOut?: boolean;
+  pintOnly?: boolean;
   containsAllergens?: string[];
 };
 
@@ -41,6 +42,7 @@ function isPublicFlavor(value: unknown): value is PublicFlavor {
     (flavor.imageUrl === null || typeof flavor.imageUrl === "string") &&
     (flavor.featuredRank === null || typeof flavor.featuredRank === "number") &&
     (flavor.almostOut === undefined || typeof flavor.almostOut === "boolean") &&
+    (flavor.pintOnly === undefined || typeof flavor.pintOnly === "boolean") &&
     (flavor.showAskStaff === undefined || typeof flavor.showAskStaff === "boolean") &&
     (flavor.containsAllergens === undefined || (Array.isArray(flavor.containsAllergens) &&
       flavor.containsAllergens.every(item => typeof item === "string")))
