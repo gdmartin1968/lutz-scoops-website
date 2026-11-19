@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "test:almost-out-presentation": "node --experimental-strip-types scripts/test-almost-out-presentation.ts",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/build-cake-metadata.mjs",
     "lint": "oxlint",
     "test:homepage": "node --experimental-strip-types scripts/test-homepage.ts",
     "test:homepage-browser": "node scripts/test-homepage-browser.cjs",
@@ -23,7 +23,8 @@
     "test:about-page-browser": "node scripts/test-about-page-browser.cjs",
     "test:ordering-flow": "node --experimental-strip-types scripts/test-ordering-flow.ts",
     "test:ordering-flow-browser": "node scripts/test-ordering-flow-browser.cjs",
-    "test:site-fidelity-browser": "node scripts/test-site-fidelity-browser.cjs"
+    "test:site-fidelity-browser": "node scripts/test-site-fidelity-browser.cjs",
+    "test:cakes-browser": "node scripts/test-cakes-browser.cjs"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

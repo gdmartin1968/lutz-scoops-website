@@ -11,6 +11,7 @@ const links = [
   { label: "Home", href: "/#top" },
   { label: "Flavors", href: "/flavors" },
   { label: "Menu", href: "/menu" },
+  { label: "Cakes", href: "/ice-cream-cakes" },
   { label: "About", href: "/about" },
   { label: "Visit", href: "/visit" },
 ];
